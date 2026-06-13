@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { cssVar } from "@/lib/design-tokens";
 
 const ROLES = [
   "React Developer",
@@ -10,13 +11,15 @@ const ROLES = [
   "Creative Coder",
 ];
 
-const CREAM = "#EEDFBF";
-const ORANGE = "#E45815";
-const BLUE = "#7FA1BC";
-const YELLOW = "#F5BE5D";
-const INK = "#302E2F";
-
-const SHAPE_BAG = [ORANGE, BLUE, INK, ORANGE, BLUE, INK, YELLOW];
+const SHAPE_BAG = [
+  cssVar.orange,
+  cssVar.blue,
+  cssVar.ink,
+  cssVar.orange,
+  cssVar.blue,
+  cssVar.ink,
+  cssVar.yellow,
+];
 // ONE consistent geometry so tiles connect like a puzzle: every motif's dividing
 // edge runs corner-to-corner (the cell diagonal) at the same full-cell scale.
 // Quarter-circles dominate so 4 around a shared corner build a full circle.
@@ -122,7 +125,7 @@ function Tile({
       style={{
         gridColumn: c,
         gridRow: r,
-        background: CREAM,
+        background: cssVar.cream,
         WebkitTapHighlightColor: "transparent",
       }}
     >
@@ -130,7 +133,7 @@ function Tile({
         className="absolute inset-0"
         style={{
           transform: `rotate(${baseRot + rotation}deg)`,
-          transition: "transform 650ms cubic-bezier(0.34, 1.4, 0.5, 1)",
+          transition: "transform 650ms cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         <span className="absolute" style={motifStyle(motif, shape)} />
@@ -151,13 +154,15 @@ function RoleCard({
       className="flex flex-col justify-center overflow-hidden border-b border-r border-ink/12 bg-cream px-5 sm:px-7"
       style={style}
     >
-      <p className="mb-1.5 font-body text-[0.6rem] uppercase tracking-[0.35em] text-ink/55 sm:text-xs">
+      <p className="mb-1.5 font-body text-[0.6rem] uppercase tracking-[0.35em] text-ink/70 sm:text-xs">
         I&apos;m a
       </p>
-      <h2 className="flex min-h-[1.2em] items-center font-display text-3xl leading-none text-ink sm:text-4xl lg:text-5xl xl:text-6xl">
-        <span>{typed}</span>
+      <h1 className="flex min-h-[1.2em] items-center font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl xl:text-7xl">
+        <span aria-live="polite" aria-atomic="true">
+          {typed}
+        </span>
         <span className="type-cursor" aria-hidden="true" />
-      </h2>
+      </h1>
     </div>
   );
 }
@@ -170,7 +175,7 @@ function ContactCard({ style }: { style: CSSProperties }) {
     >
       <a
         href="mailto:kalinovskiydan@gmail.com"
-        className="pointer-events-auto min-w-0 flex-1 truncate font-body text-sm text-ink underline-offset-4 hover:underline sm:text-base"
+        className="focus-bauhaus pointer-events-auto min-w-0 flex-1 truncate font-body text-sm text-ink underline-offset-4 hover:underline sm:text-base"
       >
         kalinovskiydan@gmail.com
       </a>
@@ -180,7 +185,7 @@ function ContactCard({ style }: { style: CSSProperties }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
-          className="pointer-events-auto flex h-10 w-10 items-center justify-center border-[3px] border-ink bg-orange text-cream transition-transform hover:-translate-y-0.5"
+          className="focus-bauhaus pointer-events-auto flex h-10 w-10 items-center justify-center border-[3px] border-ink bg-orange text-cream transition-transform hover:-translate-y-0.5"
         >
           <FaGithub className="h-5 w-5" />
         </a>
@@ -189,7 +194,7 @@ function ContactCard({ style }: { style: CSSProperties }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
-          className="pointer-events-auto flex h-10 w-10 items-center justify-center border-[3px] border-ink bg-blue text-cream transition-transform hover:-translate-y-0.5"
+          className="focus-bauhaus pointer-events-auto flex h-10 w-10 items-center justify-center border-[3px] border-ink bg-blue text-cream transition-transform hover:-translate-y-0.5"
         >
           <FaLinkedinIn className="h-5 w-5" />
         </a>

@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import SectionHeading from "@/components/SectionHeading";
 
 type Brand = {
   id: string;
@@ -16,14 +17,10 @@ type Brand = {
   w: number;
   h: number;
   rotation: number;
-  // resting position as a fraction of the field (center of the sticker)
   cx: number;
   cy: number;
 };
 
-// sizes vary on purpose: wide wordmarks (Levi's, ASICS, Valve, Spalding, OG)
-// run bigger; the square marks (Cursor, Spotify, Vivaldi, Notion, Figma,
-// Logitech) run smaller. Positions are a deliberately chaotic scatter.
 const BRANDS: Brand[] = [
   { id: "valve", name: "Valve", blurb: "Steam is just home for me.", src: "/valve.svg", w: 196, h: 56, rotation: -8, cx: 0.19, cy: 0.13 },
   { id: "vivaldi", name: "Vivaldi", blurb: "Browser that lets me have 47 tabs open without judgment.", src: "/vivaldi.svg", w: 84, h: 84, rotation: 8, cx: 0.45, cy: 0.16 },
@@ -94,7 +91,7 @@ export default function Brands() {
     topZ.current += 1;
     setZMap((m) => ({ ...m, [id]: topZ.current }));
     setDragId(id);
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
   };
 
   const handlePointerMove = useCallback(
@@ -137,11 +134,9 @@ export default function Brands() {
     <section className="relative bg-cream px-5 py-24 sm:px-8 lg:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <span className="section-tab font-display text-2xl lowercase">
-            my favorite brands
-          </span>
-          <p className="font-body text-sm font-medium text-ink/60">
-            ✦ drag the stickers · hover for the story
+          <SectionHeading>my favorite brands</SectionHeading>
+          <p className="font-body text-sm font-medium text-ink/70">
+            ✦ drag the stickers · focus or hover for the story
           </p>
         </div>
 
@@ -157,10 +152,14 @@ export default function Brands() {
           {BRANDS.map((brand) => {
             const pos = positions[brand.id];
             const isDragging = dragId === brand.id;
+            const tooltipId = `brand-tip-${brand.id}`;
             return (
-              <div
+              <button
                 key={brand.id}
-                className="group absolute select-none"
+                type="button"
+                aria-label={brand.name}
+                aria-describedby={tooltipId}
+                className="group absolute select-none border-0 bg-transparent p-0 focus-bauhaus"
                 style={{
                   left: pos?.x ?? 0,
                   top: pos?.y ?? 0,
@@ -173,36 +172,49 @@ export default function Brands() {
                 }}
                 onPointerDown={handlePointerDown(brand.id)}
               >
-                {/* hover tooltip — small text menu */}
                 <div
-                  className="pointer-events-none absolute bottom-[calc(100%+12px)] left-1/2 w-56 -translate-x-1/2 border-[3px] border-ink bg-cream p-3 text-left opacity-0 shadow-bauhaus-sm transition-opacity duration-200 group-hover:opacity-100"
+                  id={tooltipId}
+                  role="tooltip"
+                  className="pointer-events-none absolute bottom-[calc(100%+12px)] left-1/2 w-56 -translate-x-1/2 border-[3px] border-ink bg-cream p-3 text-left opacity-0 shadow-bauhaus-sm transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
                   style={{ opacity: isDragging ? 0 : undefined }}
                 >
-                  <p className="font-display text-base lowercase text-ink">
+                  <p className="font-display text-lg lowercase text-ink">
                     {brand.name}
                   </p>
                   <p className="mt-1 font-body text-xs leading-snug text-ink/75">
                     {brand.blurb}
                   </p>
-                  <span
-                    className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b-[3px] border-r-[3px] border-ink"
-                    style={{ background: "#EEDFBF" }}
-                  />
+                  <span className="absolute left-1/2 top-full h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b-[3px] border-r-[3px] border-ink bg-cream" />
                 </div>
 
-                {/* the logo itself is the sticker — no background */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={brand.src}
-                  alt={brand.name}
+                  alt=""
+                  aria-hidden="true"
                   draggable={false}
                   className="pointer-events-none h-full w-full select-none object-contain"
                   style={{ transform: `rotate(${brand.rotation}deg)` }}
                 />
-              </div>
+              </button>
             );
           })}
         </div>
+
+        <ul
+          className="mt-8 grid gap-3 sm:grid-cols-2 lg:hidden"
+          aria-label="Brand stories"
+        >
+          {BRANDS.map((brand) => (
+            <li
+              key={brand.id}
+              className="border-2 border-ink bg-cream px-4 py-3 font-body text-sm text-ink"
+            >
+              <span className="font-display text-lg lowercase">{brand.name}</span>
+              <span className="text-ink/75">: {brand.blurb}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

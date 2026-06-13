@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import SectionHeading from "@/components/SectionHeading";
 
 export default function Passion() {
   return (
@@ -12,20 +13,18 @@ export default function Passion() {
 
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
         <Reveal className="space-y-7">
-          <span className="section-tab font-display text-2xl lowercase">
-            passion
-          </span>
+          <SectionHeading>passion</SectionHeading>
           <p className="font-body text-lg leading-relaxed text-ink sm:text-xl">
             Music is my background code. It keeps my brain in sync, fuels
             late-night design sprints, and sets the tone for every idea I bring
-            to life. My playlist is a peek into my creative chaos — a mix of
+            to life. My playlist is a peek into my creative chaos: a mix of
             focus beats, dopamine drops, and pure vibes. Hit play and you&apos;ll
             probably understand me better than any bio could.
           </p>
 
           <div className="flex items-center gap-4 text-ink">
             <span className="h-[3px] flex-1 bg-ink" aria-hidden="true" />
-            <span className="font-display text-xl">★</span>
+            <span className="font-display text-2xl">★</span>
             <span className="h-[3px] flex-1 bg-ink" aria-hidden="true" />
           </div>
 

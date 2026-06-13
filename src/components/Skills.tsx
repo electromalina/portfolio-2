@@ -16,16 +16,18 @@ import {
   SiTypescript,
 } from "react-icons/si";
 import { TbApi, TbPhotoEdit } from "react-icons/tb";
+import SectionHeading from "@/components/SectionHeading";
+import type { AccentName } from "@/lib/design-tokens";
 
 type SkillCategoryKey = "frontend" | "backend" | "design";
 
 type SkillItem = { name: string; icon: IconType };
-type SkillCategory = { title: string; color: string; items: SkillItem[] };
+type SkillCategory = { title: string; accent: AccentName; items: SkillItem[] };
 
 const skillCategories: Record<SkillCategoryKey, SkillCategory> = {
   frontend: {
     title: "Front-end",
-    color: "#E45815",
+    accent: "orange",
     items: [
       { name: "HTML", icon: SiHtml5 },
       { name: "CSS", icon: SiCss },
@@ -38,7 +40,7 @@ const skillCategories: Record<SkillCategoryKey, SkillCategory> = {
   },
   backend: {
     title: "Back-end",
-    color: "#7FA1BC",
+    accent: "blue",
     items: [
       { name: "Node.js", icon: SiNodedotjs },
       { name: "Supabase", icon: SiSupabase },
@@ -48,7 +50,7 @@ const skillCategories: Record<SkillCategoryKey, SkillCategory> = {
   },
   design: {
     title: "Design",
-    color: "#F5BE5D",
+    accent: "yellow",
     items: [
       { name: "Figma", icon: SiFigma },
       { name: "Photoshop", icon: TbPhotoEdit },
@@ -57,6 +59,20 @@ const skillCategories: Record<SkillCategoryKey, SkillCategory> = {
 };
 
 const ORDER: SkillCategoryKey[] = ["frontend", "backend", "design"];
+
+const TAB_IDS: Record<SkillCategoryKey, string> = {
+  frontend: "skills-tab-frontend",
+  backend: "skills-tab-backend",
+  design: "skills-tab-design",
+};
+
+const PANEL_ID = "skills-panel";
+
+const ACTIVE_TAB_BG: Record<AccentName, string> = {
+  orange: "bg-orange",
+  blue: "bg-blue",
+  yellow: "bg-yellow",
+};
 
 export default function Skills() {
   const [active, setActive] = useState<SkillCategoryKey>("frontend");
@@ -69,15 +85,10 @@ export default function Skills() {
     >
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 text-center">
-          <span className="section-tab font-display text-2xl lowercase">
-            skills
-          </span>
+          <SectionHeading>skills</SectionHeading>
         </div>
 
-        {/* category switch — a segmented toggle, visually distinct from the
-            section heading so it clearly reads as the interactive control */}
-        <div className="mb-14 flex flex-col items-center gap-3">
-          
+        <div className="mb-20 flex flex-col items-center gap-3 sm:mb-24">
           <div
             role="tablist"
             aria-label="Skill categories"
@@ -90,16 +101,16 @@ export default function Skills() {
                   key={key}
                   type="button"
                   role="tab"
-                  onClick={() => setActive(key)}
+                  id={TAB_IDS[key]}
+                  aria-controls={PANEL_ID}
                   aria-selected={isActive}
-                  className={`cursor-pointer px-5 py-2.5 font-body text-sm font-bold uppercase tracking-wide transition-colors sm:px-7 ${
+                  tabIndex={isActive ? 0 : -1}
+                  onClick={() => setActive(key)}
+                  className={`focus-bauhaus cursor-pointer px-5 py-2.5 font-body text-sm font-bold uppercase tracking-wide transition-colors sm:px-7 ${
                     i > 0 ? "border-l-[3px] border-ink" : ""
-                  } ${isActive ? "text-ink" : "text-ink/55 hover:text-ink"}`}
-                  style={{
-                    backgroundColor: isActive
-                      ? skillCategories[key].color
-                      : "transparent",
-                  }}
+                  } ${isActive ? "text-ink" : "text-ink/70 hover:text-ink"} ${
+                    isActive ? ACTIVE_TAB_BG[skillCategories[key].accent] : "bg-transparent"
+                  }`}
                 >
                   {skillCategories[key].title}
                 </button>
@@ -108,10 +119,13 @@ export default function Skills() {
           </div>
         </div>
 
-        {/* skill grid — just logo + label, recolor to the category accent on hover */}
         <div
           key={active}
-          className="mx-auto grid max-w-4xl grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4"
+          role="tabpanel"
+          id={PANEL_ID}
+          aria-labelledby={TAB_IDS[active]}
+          tabIndex={0}
+          className="mx-auto grid min-h-[26rem] max-w-4xl grid-cols-2 content-start gap-x-6 gap-y-10 sm:min-h-[21rem] sm:grid-cols-3 lg:min-h-[15rem] lg:grid-cols-4"
         >
           {category.items.map((item) => {
             const Icon = item.icon;
@@ -119,7 +133,11 @@ export default function Skills() {
               <div
                 key={item.name}
                 className="group flex flex-col items-center justify-center gap-3 text-ink transition-colors"
-                style={{ "--accent": category.color } as React.CSSProperties}
+                style={
+                  {
+                    "--accent": `var(--color-${category.accent})`,
+                  } as React.CSSProperties
+                }
               >
                 <Icon className="h-14 w-14 transition-colors duration-300 group-hover:text-[var(--accent)]" />
                 <span className="font-body text-sm font-bold uppercase tracking-wide transition-colors duration-300 group-hover:text-[var(--accent)]">

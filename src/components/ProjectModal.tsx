@@ -7,10 +7,12 @@ import { FaArrowUpRightFromSquare, FaGithub, FaXmark } from "react-icons/fa6";
 export default function ProjectModal({
   project,
   accent,
+  returnFocusRef,
   onClose,
 }: {
   project: Project | null;
   accent: string;
+  returnFocusRef?: React.RefObject<HTMLElement | null>;
   onClose: () => void;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
@@ -49,8 +51,9 @@ export default function ProjectModal({
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      returnFocusRef?.current?.focus();
     };
-  }, [project, onClose]);
+  }, [project, onClose, returnFocusRef]);
 
   if (!project) return null;
 
@@ -76,14 +79,14 @@ export default function ProjectModal({
           type="button"
           onClick={onClose}
           aria-label="Close project details"
-          className="absolute right-3 top-3 z-20 flex h-11 w-11 items-center justify-center border-[3px] border-ink bg-cream text-ink shadow-bauhaus-sm transition-colors hover:bg-ink hover:text-cream"
+          className="focus-bauhaus absolute right-3 top-3 z-20 flex h-11 w-11 items-center justify-center border-[3px] border-ink bg-cream text-ink shadow-bauhaus-sm transition-colors hover:bg-ink hover:text-cream"
         >
           <FaXmark className="h-5 w-5" />
         </button>
 
-        {/* image banner — identical 16:9 box for every project, never stretched */}
+        {/* cover — full image visible, scaled to fit */}
         <div
-          className="relative w-full overflow-hidden border-b-[3px] border-ink"
+          className="relative flex w-full items-center justify-center border-b-[3px] border-ink px-4 py-4 sm:px-6"
           style={{ backgroundColor: accent }}
         >
           {project.cover_url ? (
@@ -91,11 +94,11 @@ export default function ProjectModal({
             <img
               src={project.cover_url}
               alt={`${project.title} cover`}
-              className="aspect-[16/9] w-full object-cover"
+              className="block max-h-[min(50vh,28rem)] w-full object-contain"
               loading="lazy"
             />
           ) : (
-            <div className="flex aspect-[16/9] w-full items-center justify-center">
+            <div className="flex aspect-[16/9] w-full max-w-md items-center justify-center">
               <span className="h-24 w-24 rounded-full border-[10px] border-ink/25" />
             </div>
           )}
@@ -104,12 +107,12 @@ export default function ProjectModal({
         {/* content */}
         <div className="flex flex-col gap-6 p-6 sm:p-9">
           <div>
-            <p className="mb-2 font-body text-xs font-bold uppercase tracking-[0.35em] text-ink/55">
+            <p className="mb-2 font-body text-xs font-bold uppercase tracking-[0.35em] text-ink/70">
               Project
             </p>
             <h2
               id="project-modal-title"
-              className="font-display text-4xl leading-tight text-ink sm:text-5xl"
+              className="font-display text-5xl leading-tight text-ink sm:text-6xl"
             >
               {project.title}
             </h2>
@@ -153,7 +156,7 @@ export default function ProjectModal({
                   href={project.demo_url!}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border-[3px] border-ink bg-orange px-6 py-3 font-body text-sm font-bold text-cream shadow-bauhaus-sm transition-transform hover:-translate-y-0.5"
+                  className="focus-bauhaus inline-flex items-center gap-2 border-[3px] border-ink bg-orange px-6 py-3 font-body text-sm font-bold text-cream shadow-bauhaus-sm transition-transform hover:-translate-y-0.5"
                 >
                   Live Demo
                   <FaArrowUpRightFromSquare className="h-3.5 w-3.5" />
@@ -164,7 +167,7 @@ export default function ProjectModal({
                   href={project.github_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border-[3px] border-ink bg-cream px-6 py-3 font-body text-sm font-bold text-ink shadow-bauhaus-sm transition-transform hover:-translate-y-0.5"
+                  className="focus-bauhaus inline-flex items-center gap-2 border-[3px] border-ink bg-cream px-6 py-3 font-body text-sm font-bold text-ink shadow-bauhaus-sm transition-transform hover:-translate-y-0.5"
                 >
                   <FaGithub className="h-4 w-4" />
                   View Code
@@ -182,7 +185,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-3 flex items-center gap-3">
       <span className="h-3 w-3 bg-orange" />
-      <span className="font-body text-xs font-bold uppercase tracking-[0.25em] text-ink/60">
+      <span className="font-body text-xs font-bold uppercase tracking-[0.25em] text-ink/70">
         {children}
       </span>
     </div>

@@ -19,7 +19,7 @@
 }
 
 :root {
-  --background: #ffffff;
+  --background: #eedfbf;
   --foreground: #302e2f;
 }
 
@@ -69,10 +69,44 @@ html {
   background: var(--color-yellow);
   color: var(--color-ink);
   border: 3px solid var(--color-ink);
-  padding: 0.3rem 1.1rem 0.45rem;
+  padding: 0.35rem 1.25rem 0.5rem;
   font-family: var(--font-bayer), sans-serif;
+  font-size: 1.875rem;
   letter-spacing: 0.06em;
   box-shadow: 4px 4px 0 0 var(--color-ink);
+}
+
+h2.section-tab {
+  margin: 0;
+  font-weight: inherit;
+}
+
+/* skip link — first tab stop, visible on focus */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 9999;
+  padding: 0.6rem 1.1rem;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 3px solid var(--color-ink);
+  box-shadow: 4px 4px 0 0 var(--color-ink);
+  transform: translateY(-200%);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.focus-bauhaus:focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 2px;
 }
 
 /* ---- Animations -------------------------------------------------------- */
@@ -207,6 +241,7 @@ html {
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+  will-change: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {

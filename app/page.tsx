@@ -8,8 +8,8 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import { getPublishedProjects } from "@/lib/projects";
 
-// Always reflect the live project list from Supabase.
-export const dynamic = "force-dynamic";
+// Revalidate project list every 60s instead of forcing dynamic on every request.
+export const revalidate = 60;
 
 export default async function Home() {
   const projects = await getPublishedProjects();
@@ -17,12 +17,14 @@ export default async function Home() {
   return (
     <div className="flex flex-1 flex-col bg-cream font-body text-ink">
       <Header />
-      <Hero />
-      <About />
-      <Passion />
-      <Brands />
-      <Skills />
-      <Projects projects={projects} />
+      <main id="main-content" className="flex flex-1 flex-col">
+        <Hero />
+        <About />
+        <Passion />
+        <Brands />
+        <Skills />
+        <Projects projects={projects} />
+      </main>
       <Contact />
     </div>
   );
