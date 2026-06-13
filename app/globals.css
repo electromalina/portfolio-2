@@ -1,26 +1,232 @@
 @import "tailwindcss";
 
+/* ----------------------------------------------------------------------------
+   Bauhaus portfolio theme
+   palette: orange #E45815 · blue #7FA1BC · yellow #F5BE5D · ink #302E2F
+            cream #EEDFBF
+---------------------------------------------------------------------------- */
+
+@theme {
+  --color-cream: #eedfbf;
+  --color-orange: #e45815;
+  --color-blue: #7fa1bc;
+  --color-yellow: #f5be5d;
+  --color-ink: #302e2f;
+
+  /* fonts are injected on <html> by next/font as --font-bayer / --font-hanken */
+  --font-display: var(--font-bayer), "Arial Black", sans-serif;
+  --font-body: var(--font-hanken), system-ui, sans-serif;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #302e2f;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-hanken), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* keep the smooth-scroll for in-page nav anchors, but respect reduced motion */
+html {
+  scroll-behavior: smooth;
+  /* offset anchor targets so they clear the sticky header */
+  scroll-padding-top: 72px;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: var(--color-cream);
+}
+
+/* ---- Bauhaus building blocks ------------------------------------------- */
+
+/* hard offset shadow that defines the whole aesthetic */
+.shadow-bauhaus {
+  box-shadow: 8px 8px 0 0 var(--color-ink);
+}
+.shadow-bauhaus-sm {
+  box-shadow: 5px 5px 0 0 var(--color-ink);
+}
+.shadow-bauhaus-orange {
+  box-shadow: 8px 8px 0 0 var(--color-orange);
+}
+
+/* faint engineering grid used behind hero / sections */
+.bauhaus-grid {
+  background-image:
+    linear-gradient(to right, rgba(48, 46, 47, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(48, 46, 47, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* little label "tab" used above section headings (see wireframe) */
+.section-tab {
+  display: inline-block;
+  background: var(--color-yellow);
+  color: var(--color-ink);
+  border: 3px solid var(--color-ink);
+  padding: 0.3rem 1.1rem 0.45rem;
+  font-family: var(--font-bayer), sans-serif;
+  letter-spacing: 0.06em;
+  box-shadow: 4px 4px 0 0 var(--color-ink);
+}
+
+/* ---- Animations -------------------------------------------------------- */
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+@keyframes float-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(16px);
+  }
+}
+@keyframes pulse-scale {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+@keyframes morph {
+  0%,
+  100% {
+    border-radius: 50%;
+  }
+  50% {
+    border-radius: 18% 82% 70% 30% / 30% 30% 70% 70%;
+  }
+}
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.anim-spin-slow {
+  animation: spin-slow 22s linear infinite;
+}
+.anim-float-y {
+  animation: float-y 6s ease-in-out infinite;
+}
+.anim-float-x {
+  animation: float-x 7s ease-in-out infinite;
+}
+.anim-pulse {
+  animation: pulse-scale 5s ease-in-out infinite;
+}
+.anim-morph {
+  animation: morph 12s ease-in-out infinite;
+}
+.anim-sway {
+  animation: sway 9s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* ---- Project modal ----------------------------------------------------- */
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.modal-overlay {
+  animation: overlay-in 0.25s ease both;
+}
+.modal-panel {
+  animation: modal-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.type-cursor {
+  display: inline-block;
+  width: 0.07em;
+  margin-left: 0.04em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+  align-self: stretch;
+}
+
+/* ---- Scroll reveal ----------------------------------------------------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .anim-spin-slow,
+  .anim-float-y,
+  .anim-float-x,
+  .anim-pulse,
+  .anim-morph,
+  .anim-sway,
+  .type-cursor,
+  .modal-overlay,
+  .modal-panel {
+    animation: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

@@ -1,55 +1,56 @@
-"use client";
-
-import { useFadeInLeft, useFadeInRight } from "@/app/hooks/useScrollAnimation";
+import Reveal from "@/components/Reveal";
 
 export default function Passion() {
-  const textRef = useFadeInLeft(0, 1, "top 80%");
-  const spotifyRef = useFadeInRight(0.3, 1, "top 80%");
-
   return (
     <section
       id="passion"
-      className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 snap-section"
+      className="relative overflow-hidden bg-blue px-5 py-24 sm:px-8 lg:py-32"
     >
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="grid gap-12 lg:gap-16 xl:gap-20 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,0.85fr)] items-center">
-          <div ref={textRef as React.RefObject<HTMLDivElement>} className="space-y-8 lg:space-y-10">
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold text-primary">
-                Passion
-              </h2>
-              <p className="text-base md:text-lg leading-relaxed text-foreground/80 max-w-xl">
-                Music is my background code. It keeps my brain in sync, fuels late-night
-                design sprints, and sets the tone for every idea I bring to life. My
-                playlist is a peek into my creative chaos – a mix of focus beats,
-                dopamine drops, and pure vibes. Hit play and you’ll probably
-                understand me better than any bio could.
-              </p>
-            </div>
+      {/* decorative stripes */}
+      <span className="pointer-events-none absolute -right-10 top-10 h-40 w-40 rounded-full border-[10px] border-ink/30" />
+      <span className="pointer-events-none absolute bottom-8 left-6 h-0 w-0 border-x-[40px] border-b-[70px] border-x-transparent border-b-ink/20" />
 
-            <div className="flex items-center gap-6 text-primary">
-              <span className="flex-1 h-[2px] bg-primary/70" aria-hidden="true" />
-              <span className="text-sm tracking-[0.4em] uppercase">★</span>
-              <span className="flex-1 h-[2px] bg-primary/70" aria-hidden="true" />
-            </div>
+      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
+        <Reveal className="space-y-7">
+          <span className="section-tab font-display text-2xl lowercase">
+            passion
+          </span>
+          <p className="font-body text-lg leading-relaxed text-ink sm:text-xl">
+            Music is my background code. It keeps my brain in sync, fuels
+            late-night design sprints, and sets the tone for every idea I bring
+            to life. My playlist is a peek into my creative chaos — a mix of
+            focus beats, dopamine drops, and pure vibes. Hit play and you&apos;ll
+            probably understand me better than any bio could.
+          </p>
 
-            <p className="text-sm md:text-base text-foreground/70">
-              Now vibing to: <span className="font-mono text-foreground"> Minimal House</span>
-            </p>
+          <div className="flex items-center gap-4 text-ink">
+            <span className="h-[3px] flex-1 bg-ink" aria-hidden="true" />
+            <span className="font-display text-xl">★</span>
+            <span className="h-[3px] flex-1 bg-ink" aria-hidden="true" />
           </div>
 
-          <div ref={spotifyRef as React.RefObject<HTMLDivElement>} className="glass-card rounded-3xl overflow-hidden w-full max-w-xl lg:max-w-md xl:max-w-lg mx-auto shadow-lg">
+          <p className="font-body text-base text-ink">
+            Now vibing to:{" "}
+            <span className="bg-yellow px-2 py-0.5 font-semibold">
+              Minimal House
+            </span>
+          </p>
+        </Reveal>
+
+        <Reveal delay={150} className="relative">
+          {/* the Spotify embed has ~12px rounded corners — match them on the frame */}
+          <span className="absolute -bottom-4 -right-4 -z-0 h-full w-full rounded-xl bg-orange" />
+          <div className="relative z-10 overflow-hidden rounded-xl border-[3px] border-ink bg-cream shadow-bauhaus">
             <iframe
               src="https://open.spotify.com/embed/playlist/2FlK0lSTgJMojzUpEK89D5?utm_source=generator"
-              title="Spotify playlist: Keep Going"
+              title="Spotify playlist"
               loading="lazy"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              className="w-full h-[380px] md:h-[420px]"
+              className="h-[420px] w-full"
             />
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
 }
-
