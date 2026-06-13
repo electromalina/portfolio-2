@@ -14,7 +14,7 @@ export default function Passion() {
       <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
         <Reveal className="space-y-7">
           <SectionHeading>passion</SectionHeading>
-          <p className="font-body text-lg leading-relaxed text-ink sm:text-xl">
+          <p className="font-body margin-p text-lg leading-relaxed text-ink sm:text-xl">
             Music is my background code. It keeps my brain in sync, fuels
             late-night design sprints, and sets the tone for every idea I bring
             to life. My playlist is a peek into my creative chaos: a mix of

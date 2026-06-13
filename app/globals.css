@@ -81,6 +81,10 @@ h2.section-tab {
   font-weight: inherit;
 }
 
+.margin-p{
+  margin: 1.25rem 0 0;
+}
+
 /* skip link — first tab stop, visible on focus */
 .skip-link {
   position: fixed;

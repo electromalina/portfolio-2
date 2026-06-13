@@ -27,7 +27,7 @@ export default function About() {
 
         <Reveal delay={120} className="space-y-7">
           <SectionHeading>about me</SectionHeading>
-          <p className="font-body text-lg leading-relaxed text-ink/85 sm:text-xl">
+          <p className="font-body margin-p text-lg leading-relaxed text-ink/85 sm:text-xl">
             Passionate media design student specializing mainly in front-end web
             development and UI/UX design. Experienced in developing brandings,
             creating high-fidelity prototypes, conducting project research, and
