@@ -25,21 +25,21 @@ export const metadata: Metadata = {
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000")
   ),
-  title: "Danylo Kalynovskyi — React Developer",
+  title: "Danylo Kalynovskyi ",
   description:
-    "Portfolio of Danylo Kalynovskyi — media design student specializing in front-end web development and UI/UX design.",
+    "Portfolio of Danylo Kalynovskyi",
   openGraph: {
-    title: "Danylo Kalynovskyi — React Developer",
+    title: "Danylo Kalynovskyi",
     description:
-      "Portfolio of Danylo Kalynovskyi — media design student specializing in front-end web development and UI/UX design.",
+      "Portfolio of Danylo Kalynovskyi",
     images: [{ url: "/og.svg", width: 1200, height: 630, alt: "Danylo Kalynovskyi portfolio" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Danylo Kalynovskyi — React Developer",
+    title: "Danylo Kalynovskyi",
     description:
-      "Portfolio of Danylo Kalynovskyi — media design student specializing in front-end web development and UI/UX design.",
+      "Portfolio of Danylo Kalynovskyi",
     images: ["/og.svg"],
   },
 };
