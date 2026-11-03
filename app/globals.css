@@ -45,13 +45,14 @@ html {
 /* ---- Bauhaus building blocks ------------------------------------------- */
 
 /* hard offset shadow that defines the whole aesthetic */
-.shadow-bauhaus {
+/* declared with @utility (not plain classes) so variants like hover: work */
+@utility shadow-bauhaus {
   box-shadow: 8px 8px 0 0 var(--color-ink);
 }
-.shadow-bauhaus-sm {
+@utility shadow-bauhaus-sm {
   box-shadow: 5px 5px 0 0 var(--color-ink);
 }
-.shadow-bauhaus-orange {
+@utility shadow-bauhaus-orange {
   box-shadow: 8px 8px 0 0 var(--color-orange);
 }
 

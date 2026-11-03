@@ -42,3 +42,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local docs / AI tool notes (not committed)
+CLAUDE.md
+DESIGN.md
+PRODUCT.md
+memory/

@@ -98,6 +98,12 @@ export default function Projects({ projects }: { projects: Project[] }) {
     return () => window.removeEventListener("resize", syncTrack);
   }, [syncTrack]);
 
+  // warm the browser cache with the focused card's cover so the modal opens with it ready
+  useEffect(() => {
+    const src = projects[focusedIndex]?.cover_url;
+    if (src) new Image().src = src;
+  }, [focusedIndex, projects]);
+
   const openProject = (project: Project, accent: string) => {
     returnFocusRef.current = document.activeElement as HTMLElement;
     setModal({ project, accent });
@@ -189,7 +195,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                               ? `View details for ${project.title}`
                               : `Show ${project.title} in carousel`
                           }
-                          className={`focus-bauhaus group flex w-[280px] cursor-pointer flex-col border-[3px] border-ink bg-cream text-left shadow-bauhaus focus:outline-none sm:w-[340px] ${
+                          className={`focus-bauhaus group flex w-[280px] cursor-pointer flex-col border-[3px] border-ink bg-cream text-left shadow-bauhaus transition-shadow duration-300 focus:outline-none motion-reduce:transition-none sm:w-[340px] ${
                             isFocused
                               ? "focus-visible:shadow-bauhaus-orange hover:shadow-bauhaus-orange"
                               : "hover:shadow-bauhaus-sm"
@@ -224,12 +230,19 @@ export default function Projects({ projects }: { projects: Project[] }) {
                                 ))}
                               </div>
                             )}
-
-                            <span className="mt-auto inline-flex items-center gap-2 pt-2 font-body text-sm font-bold uppercase tracking-wide text-ink">
-                              {isFocused ? "View details" : "Select"}
-                              <FaArrowRightLong className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-                            </span>
                           </div>
+
+                          {/* CTA bar: on the focused card, ink sweeps in from the left */}
+                          <span
+                            className={`flex items-center justify-between border-t-[3px] border-ink px-5 py-3 font-body text-sm font-bold uppercase tracking-wide text-ink ${
+                              isFocused
+                                ? "bg-[linear-gradient(var(--color-ink),var(--color-ink))] bg-[length:0%_100%] bg-no-repeat transition-[background-size,color] duration-300 ease-out group-hover:bg-[length:100%_100%] group-hover:text-cream group-focus-visible:bg-[length:100%_100%] group-focus-visible:text-cream motion-reduce:transition-none"
+                                : ""
+                            }`}
+                          >
+                            {isFocused ? "View details" : "Select"}
+                            <FaArrowRightLong className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5 motion-reduce:transition-none" />
+                          </span>
                         </button>
                       </div>
                     );
