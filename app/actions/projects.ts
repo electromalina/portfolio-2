@@ -104,6 +104,7 @@ export async function createProject(formData: FormData) {
     // Refresh the pages that show projects
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/projects", "layout");
   
     // Redirect back to admin page
     redirect("/admin");
@@ -162,7 +163,7 @@ export async function updateProject(id: string, formData: FormData) {
   
     revalidatePath("/");
     revalidatePath("/admin");
-    revalidatePath(`/project/${slug}`);
+    revalidatePath("/projects", "layout");
     redirect("/admin");
   }
   
@@ -200,6 +201,7 @@ export async function deleteProject(id: string) {
   
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/projects", "layout");
   }
 
 
@@ -220,4 +222,5 @@ export async function toggleHidden(id: string, currentState: boolean) {
   
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/projects", "layout");
   }

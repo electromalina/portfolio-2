@@ -1,31 +1,25 @@
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Passion from "@/components/Passion";
-import Brands from "@/components/Brands";
-import Skills from "@/components/Skills";
-import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
-import { getPublishedProjects } from "@/lib/projects";
+import MainMenu from "@/components/MainMenu";
 
-// Revalidate project list every 60s instead of forcing dynamic on every request.
-export const revalidate = 60;
-
-export default async function Home() {
-  const projects = await getPublishedProjects();
-
+// The homepage is now fully static: no DB fetch, so it's served from the CDN instantly.
+export default function Home() {
   return (
     <div className="flex flex-1 flex-col bg-cream font-body text-ink">
-      <Header />
       <main id="main-content" className="flex flex-1 flex-col">
         <Hero />
-        <About />
-        <Passion />
-        <Brands />
-        <Skills />
-        <Projects projects={projects} />
+        <MainMenu />
       </main>
-      <Contact />
+      <footer className="border-t-[3px] border-ink bg-ink px-5 py-4 text-cream sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 font-body text-xs text-cream/70">
+          <p>© {new Date().getFullYear()} Danylo Kalynovskyi</p>
+          <a
+            href="mailto:kalinovskiydan@gmail.com"
+            className="focus-bauhaus underline-offset-4 hover:text-cream hover:underline"
+          >
+            kalinovskiydan@gmail.com
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

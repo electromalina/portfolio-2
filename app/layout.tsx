@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Hanken_Grotesk } from "next/font/google";
+import { Hanken_Grotesk, Josefin_Sans } from "next/font/google";
+import TransitionProvider from "@/components/transition/TransitionProvider";
 import "./globals.css";
 
-// Display face — the geometric Bauhaus-style type the user pinned.
-const bayer = localFont({
-  src: "./fonts/BayerUniversal-Regular.ttf",
-  variable: "--font-bayer",
+// Display face — geometric, vintage Bauhaus feel. Variable font, so every
+// weight (100–700) is available without extra downloads.
+const josefin = Josefin_Sans({
+  variable: "--font-josefin",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -25,7 +26,10 @@ export const metadata: Metadata = {
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000")
   ),
-  title: "Danylo Kalynovskyi ",
+  title: {
+    default: "Danylo Kalynovskyi",
+    template: "%s · Danylo Kalynovskyi",
+  },
   description:
     "Portfolio of Danylo Kalynovskyi",
   openGraph: {
@@ -52,13 +56,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bayer.variable} ${hanken.variable} h-full antialiased`}
+      className={`${josefin.variable} ${hanken.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        {children}
+        <TransitionProvider>{children}</TransitionProvider>
       </body>
     </html>
   );

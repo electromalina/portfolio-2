@@ -13,8 +13,8 @@
   --color-yellow: #f5be5d;
   --color-ink: #302e2f;
 
-  /* fonts are injected on <html> by next/font as --font-bayer / --font-hanken */
-  --font-display: var(--font-bayer), "Arial Black", sans-serif;
+  /* fonts are injected on <html> by next/font as --font-josefin / --font-hanken */
+  --font-display: var(--font-josefin), "Arial Black", sans-serif;
   --font-body: var(--font-hanken), system-ui, sans-serif;
 }
 
@@ -30,11 +30,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* keep the smooth-scroll for in-page nav anchors, but respect reduced motion */
 html {
   scroll-behavior: smooth;
-  /* offset anchor targets so they clear the sticky header */
-  scroll-padding-top: 72px;
 }
 
 ::selection {
@@ -71,7 +68,8 @@ html {
   color: var(--color-ink);
   border: 3px solid var(--color-ink);
   padding: 0.35rem 1.25rem 0.5rem;
-  font-family: var(--font-bayer), sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 1.875rem;
   letter-spacing: 0.06em;
   box-shadow: 4px 4px 0 0 var(--color-ink);
@@ -197,31 +195,20 @@ h2.section-tab {
   transform-origin: top center;
 }
 
-/* ---- Project modal ----------------------------------------------------- */
+/* ---- Page enter (after the fullscreen wipe) --------------------------- */
 
-@keyframes overlay-in {
+@keyframes page-enter {
   from {
     opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
     transform: none;
   }
 }
-.modal-overlay {
-  animation: overlay-in 0.25s ease both;
-}
-.modal-panel {
-  animation: modal-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+.page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
 
 .type-cursor {
@@ -260,8 +247,7 @@ h2.section-tab {
   .anim-morph,
   .anim-sway,
   .type-cursor,
-  .modal-overlay,
-  .modal-panel {
+  .page-enter {
     animation: none !important;
   }
   .reveal {

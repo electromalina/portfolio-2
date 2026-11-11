@@ -150,19 +150,28 @@ function RoleCard({
   style: CSSProperties;
 }) {
   return (
+    // @container: children are sized in cqi (% of this card's width), so the
+    // name always fits on one line. cqi on the container itself would measure
+    // its parent instead, hence the inner wrapper carries padding + gap.
     <div
-      className="flex flex-col justify-center overflow-hidden border-b border-r border-ink/12 bg-cream px-5 sm:px-7"
+      className="@container overflow-hidden border-b border-r border-ink/12 bg-cream"
       style={style}
     >
-      <p className="mb-1.5 font-body text-[0.6rem] uppercase tracking-[0.35em] text-ink/70 sm:text-xs">
-        I&apos;m a
-      </p>
-      <h1 className="flex min-h-[1.2em] items-center font-display text-4xl leading-none text-ink sm:text-5xl lg:text-6xl xl:text-7xl">
-        <span aria-live="polite" aria-atomic="true">
-          {typed}
-        </span>
-        <span className="type-cursor" aria-hidden="true" />
-      </h1>
+      <div className="flex h-full flex-col justify-center gap-[1.6cqi] px-[4cqi]">
+        <h1 className="whitespace-nowrap font-display font-semibold text-[5.6cqi] lowercase leading-none text-ink">
+          danylo kalynovskyi
+        </h1>
+        {/* screen readers get the full list once instead of every typed letter */}
+        <p className="sr-only">{ROLES.join(", ")}</p>
+        <p
+          aria-hidden="true"
+          className="flex min-h-[1.2em] items-center gap-[1.6cqi] font-display text-[max(0.85rem,3.2cqi)] leading-none text-ink/85"
+        >
+          <span className="block h-[3px] w-[5cqi] shrink-0 bg-orange" />
+          <span>{typed}</span>
+          <span className="type-cursor" />
+        </p>
+      </div>
     </div>
   );
 }
@@ -298,24 +307,35 @@ export default function Hero() {
   const typed = useTypewriter(ROLES);
 
   return (
-    <section id="home" className="bg-cream px-3 pt-3 pb-6 sm:px-5 sm:pt-5">
+    <section id="home" className="bg-cream px-3 pt-3 pb-4 sm:px-5 sm:pt-5">
       <div className="relative mx-auto w-full max-w-7xl overflow-hidden border-[3px] border-ink bg-cream shadow-bauhaus">
-        {/* desktop: 10×5 grid, role at cols 7-10 / rows 2-3, contact at cols 7-10 / row 5 */}
+        {/* The name card is one row tall everywhere, leaving more room for tiles.
+            desktop (lg+): 10×4, name cols 5-10 / row 2, contact cols 7-10 / row 4 */}
         <MosaicGrid
-          className="hidden md:grid"
+          className="hidden lg:grid"
           cols={10}
-          rows={5}
-          react={{ cs: 7, ce: 11, rs: 2, re: 4 }}
-          contact={{ cs: 7, ce: 11, rs: 5, re: 6 }}
+          rows={4}
+          react={{ cs: 5, ce: 11, rs: 2, re: 3 }}
+          contact={{ cs: 7, ce: 11, rs: 4, re: 5 }}
           typed={typed}
         />
 
-        {/* mobile: simpler 4-col grid, role + contact span full width */}
+        {/* tablet (md): 8×4, name cols 1-6 / row 2, contact cols 5-8 / row 4 */}
+        <MosaicGrid
+          className="hidden md:grid lg:hidden"
+          cols={8}
+          rows={4}
+          react={{ cs: 1, ce: 7, rs: 2, re: 3 }}
+          contact={{ cs: 5, ce: 9, rs: 4, re: 5 }}
+          typed={typed}
+        />
+
+        {/* mobile: 4×5, name full width / row 2, contact full width / row 5 */}
         <MosaicGrid
           className="grid md:hidden"
           cols={4}
           rows={5}
-          react={{ cs: 1, ce: 5, rs: 2, re: 4 }}
+          react={{ cs: 1, ce: 5, rs: 2, re: 3 }}
           contact={{ cs: 1, ce: 5, rs: 5, re: 6 }}
           typed={typed}
         />

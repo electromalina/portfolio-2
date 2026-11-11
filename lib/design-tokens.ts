@@ -26,3 +26,6 @@ export const cssVar = {
   yellow: "var(--color-yellow)",
   ink: "var(--color-ink)",
 } as const;
+
+/** Accent names in the same order as ACCENT_CYCLE (for class lookups). */
+export const ACCENT_NAME_CYCLE: readonly AccentName[] = ["orange", "blue", "yellow"];
