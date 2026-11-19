@@ -205,14 +205,11 @@ h2.section-tab {
 
 /* ---- Page enter (after the fullscreen wipe) --------------------------- */
 
+/* fade only: a slide here moved the whole page content on load, which read
+   as the page "jumping" (most visible on the dark music band) */
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 .page-enter {
@@ -262,5 +259,23 @@ h2.section-tab {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ---- Album showcase (personality page) -------------------------------- */
+
+/* vinyl slides out from behind the cover. Uses the individual `translate` /
+   `rotate` properties (what Tailwind v4's translate-x-* sets), so it ends
+   exactly where the element's own class puts it. */
+@keyframes vinyl-out {
+  from {
+    translate: 0 0;
+    rotate: -90deg;
+  }
+}
+
+@keyframes cover-in {
+  from {
+    opacity: 0;
   }
 }
