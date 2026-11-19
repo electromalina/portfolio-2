@@ -56,6 +56,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // globals.css sets scroll-behavior: smooth; this tells Next.js to switch it
+      // off while it changes routes, so a new page starts at the top instantly
+      // instead of visibly scrolling there
+      data-scroll-behavior="smooth"
       className={`${josefin.variable} ${hanken.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream">

@@ -30,8 +30,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+:root {
+  /* clearance below the ~71px sticky nav bar (StickyNav) + a little air.
+     Used by anchor scrolling and by sticky elements (`top-(--nav-offset)`). */
+  --nav-offset: 5.5rem;
+}
+
 html {
   scroll-behavior: smooth;
+  /* anchor links (#cv-skills, skip link…) land below the sticky nav bar */
+  scroll-padding-top: var(--nav-offset);
 }
 
 ::selection {

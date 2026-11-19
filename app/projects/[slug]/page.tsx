@@ -99,8 +99,10 @@ export default async function ProjectPage({
           )}
         </div>
 
-        {/* right: facts column, sticky on desktop */}
-        <aside className="flex flex-col gap-8 lg:sticky lg:top-8 lg:self-start">
+        {/* right: facts column, sticky on desktop. It's short (tags + 2 buttons),
+            so it always fits on screen. top = --nav-offset keeps it below the
+            sticky nav bar instead of sliding under it. */}
+        <aside className="flex flex-col gap-8 lg:sticky lg:top-(--nav-offset) lg:self-start">
           {project.tags && project.tags.length > 0 && (
             <section className="border-[3px] border-ink bg-cream p-5 shadow-bauhaus-sm">
               <Label>Built with</Label>
@@ -149,7 +151,9 @@ export default async function ProjectPage({
       {(prev || next) && (
         <nav
           aria-label="More projects"
-          className="mx-auto grid max-w-6xl gap-4 px-5 pb-16 sm:grid-cols-2 sm:px-8"
+          // minmax(0,1fr): a grid column may not grow past the screen, so long
+          // titles wrap instead of pushing the page into horizontal scroll
+          className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-4 px-5 pb-16 sm:grid-cols-2 sm:px-8"
         >
           {prev ? (
             <SiblingLink
@@ -191,16 +195,19 @@ function SiblingLink({
     <TransitionLink
       href={href}
       color={cssVar[accent]}
-      className={`focus-bauhaus group flex items-center gap-4 border-[3px] border-ink bg-cream p-5 text-ink shadow-bauhaus-sm transition-transform hover:-translate-y-0.5 ${
+      className={`focus-bauhaus group flex min-w-0 items-center gap-4 border-[3px] border-ink bg-cream p-4 text-ink shadow-bauhaus-sm transition-transform hover:-translate-y-0.5 sm:p-5 ${
         isNext ? "justify-end text-right" : ""
       }`}
     >
       {!isNext && <FaArrowLeftLong className="h-5 w-5 shrink-0" aria-hidden="true" />}
-      <span className="min-w-0">
+      {/* flex-1 + min-w-0 lets the text shrink; titles wrap to max 2 lines */}
+      <span className="min-w-0 flex-1">
         <span className="block font-body text-xs font-bold uppercase tracking-[0.25em] text-ink/70">
           {direction} project
         </span>
-        <span className="block truncate font-display text-2xl font-semibold">{title}</span>
+        <span className="mt-0.5 line-clamp-2 break-words font-display text-xl font-semibold leading-tight sm:text-2xl">
+          {title}
+        </span>
       </span>
       {isNext && <FaArrowRightLong className="h-5 w-5 shrink-0" aria-hidden="true" />}
     </TransitionLink>
