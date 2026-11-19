@@ -3,18 +3,16 @@ import TransitionLink from "@/components/transition/TransitionLink";
 import { ACCENT_BG, CATEGORIES, type Category } from "@/lib/navigation";
 import { cssVar } from "@/lib/design-tokens";
 
-/** One geometric motif per card, same vocabulary as the hero tiles. */
+/** One static geometric motif per card, same vocabulary as the hero tiles. */
 function Motif({ id }: { id: Category["id"] }) {
-  const base =
-    "pointer-events-none absolute transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
+  const base = "pointer-events-none absolute";
 
   if (id === "about") {
     // quarter circle in the corner — grows from its corner on hover
     return (
       <span
         aria-hidden="true"
-        className={`${base} -right-1 -top-1 h-28 w-28 rounded-tl-full bg-ink/15 group-hover:scale-125 group-focus-visible:scale-125 sm:h-36 sm:w-36`}
-        style={{ transformOrigin: "100% 0" }}
+        className={`${base} -right-1 -top-1 h-28 w-28 rounded-tl-full bg-ink/15 sm:h-36 sm:w-36`}
       />
     );
   }
@@ -22,7 +20,7 @@ function Motif({ id }: { id: Category["id"] }) {
     return (
       <span
         aria-hidden="true"
-        className={`${base} right-4 top-4 h-24 w-24 bg-ink/15 group-hover:translate-x-2 group-hover:-translate-y-2 group-focus-visible:translate-x-2 group-focus-visible:-translate-y-2 sm:h-32 sm:w-32`}
+        className={`${base} right-4 top-4 h-24 w-24 bg-ink/15 sm:h-32 sm:w-32`}
         style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%)" }}
       />
     );
@@ -30,7 +28,7 @@ function Motif({ id }: { id: Category["id"] }) {
   return (
     <span
       aria-hidden="true"
-      className={`${base} -right-6 -top-6 h-28 w-28 rounded-full border-[12px] border-ink/15 group-hover:scale-110 group-focus-visible:scale-110 sm:h-36 sm:w-36`}
+      className={`${base} -right-6 -top-6 h-28 w-28 rounded-full border-[12px] border-ink/15 sm:h-36 sm:w-36`}
     />
   );
 }
@@ -39,11 +37,13 @@ export default function MainMenu() {
   return (
     <nav
       aria-label="Main sections"
-      className="bg-cream px-3 pb-10 sm:px-5 sm:pb-14"
+      className="bg-cream px-3 pb-6 sm:px-5 lg:pb-5"
     >
       <ul className="mx-auto grid max-w-7xl gap-5 md:grid-cols-3 md:gap-6">
         {CATEGORIES.map((c) => (
-          <li key={c.id} className="flex">
+          // @container: the title is sized by the card's own width (cqi), since the
+          // layout width follows the viewport height, not just the viewport width
+          <li key={c.id} className="@container flex">
             <TransitionLink
               href={c.href}
               color={cssVar[c.accent]}
@@ -52,14 +52,19 @@ export default function MainMenu() {
               className="focus-bauhaus group flex w-full flex-col border-[3px] border-ink bg-cream text-ink shadow-bauhaus"
             >
               <span
-                className={`relative flex min-h-40 flex-col justify-between overflow-hidden border-b-[3px] border-ink p-5 sm:min-h-52 sm:p-6 ${ACCENT_BG[c.accent]}`}
+                className={`relative flex min-h-36 flex-col justify-between overflow-hidden border-b-[3px] border-ink p-5 sm:min-h-40 sm:p-6 ${ACCENT_BG[c.accent]}`}
               >
                 <Motif id={c.id} />
                 <span className="relative font-body text-xl font-extrabold leading-none tracking-wider">
                   {c.number}
                 </span>
-                <span className="relative mt-8 font-display text-4xl font-semibold lowercase leading-[0.95] sm:text-5xl">
-                  {c.title}
+                <span className="relative mt-5 font-display text-[clamp(2rem,14cqi,3rem)] font-semibold lowercase leading-[1.1]">
+                  {/* ink underline growing from the left, same timing as the bottom sweep.
+                      Painted as a background on the inline text (cloned per line), so each
+                      wrapped line gets its own underline exactly as wide as its text. */}
+                  <span className="box-decoration-clone bg-[linear-gradient(var(--color-ink),var(--color-ink))] bg-[length:0%_3px] bg-[position:0_100%] bg-no-repeat pb-0.5 transition-[background-size] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:bg-[length:100%_3px] group-focus-visible:bg-[length:100%_3px] motion-reduce:transition-none">
+                    {c.title}
+                  </span>
                 </span>
               </span>
 

@@ -15,6 +15,21 @@ export type CvEntry = {
 
 export type CvLanguage = { name: string; level: string };
 
+export type CvProject = {
+  name: string;
+  /** small facts shown right of the name, e.g. ["Semester 4", "Team of 5", "2025"] */
+  meta: string[];
+  /** what the project does / what I did */
+  bullets: string[];
+  /** true while the entry is still template text — rendered dimmed */
+  placeholder?: boolean;
+};
+
+export type CvProjectGroup = {
+  intro: string;
+  items: CvProject[];
+};
+
 export const CV = {
   headline: "Media Design Student · Full Stack Developer",
   profile:
@@ -34,24 +49,64 @@ export const CV = {
   /** null until a PDF exists in /public — the button renders as "coming soon" */
   cvPdfUrl: null as string | null,
 
+  // TODO: replace the placeholder entries (name, meta, bullets) and drop `placeholder: true`
+  industryProjects: {
+    intro:
+      "Real projects for real companies, delivered through Fontys semester programmes. I worked in teams where I played a major role, from first client meeting to final delivery.",
+    items: [
+      {
+        name: "Project name",
+        meta: ["Semester 4", "Team of 5", "2025"],
+        bullets: [
+          "What the product does for the client.",
+          "What I was responsible for.",
+          "Result or outcome for the client.",
+        ],
+        placeholder: true,
+      },
+      {
+        name: "Project name",
+        meta: ["Semester 3", "Team of 4", "2024"],
+        bullets: [
+          "What the product does for the client.",
+          "What I was responsible for.",
+          "Result or outcome for the client.",
+        ],
+        placeholder: true,
+      },
+    ],
+  } satisfies CvProjectGroup,
+
+  personalProjects: {
+    intro:
+      "Things I build on my own time to learn new tools and try out ideas, designed and developed end to end by me.",
+    items: [
+      {
+        name: "Project name",
+        meta: ["Personal", "Solo", "2025"],
+        bullets: [
+          "What it does.",
+          "Stack or technique I wanted to learn.",
+        ],
+        placeholder: true,
+      },
+    ],
+  } satisfies CvProjectGroup,
+
   education: [
     {
       period: "2023 — now",
-      title: "Media Design & Front-end Development",
+      title: "HBO-ICT, BSc",
       place: "Fontys University of Applied Sciences, Eindhoven",
-      bullets: [
-        "Relevant coursework: Media Design & Smart Mobile, Front-end Development.",
-        "Built responsive web and mobile applications using HTML, CSS, JavaScript, React, TypeScript, and Flutter.",
-        "Collaborated on team projects using Git, Notion and Agile methodologies.",
-        "Developed user-focused interfaces with an emphasis on accessibility and responsive design.",
-      ],
+      description:
+        "Started with Media Design in my first year, then specialised step by step: Smart Mobile (mobile application development) in semester 3, Front-end Development in semester 4 and Full-stack Development in semester 5.",
     },
   ] satisfies CvEntry[],
 
   experience: [] as CvEntry[],
 
   languages: [
-    { name: "English", level: "Proficient" },
+    { name: "English", level: "Proficient — all studies and projects in English" },
     { name: "Ukrainian", level: "Native" },
     { name: "Russian", level: "Native" },
   ] satisfies CvLanguage[],

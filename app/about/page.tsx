@@ -11,7 +11,7 @@ import {
   FaPhone,
 } from "react-icons/fa6";
 import PageShell from "@/components/PageShell";
-import { CV, type CvEntry } from "@/lib/cv";
+import { CV, type CvEntry, type CvProjectGroup } from "@/lib/cv";
 import { SKILL_CATEGORIES } from "@/lib/skills";
 import { ACCENT_BG } from "@/lib/navigation";
 
@@ -55,10 +55,6 @@ export default function AboutPage() {
             </CvBlock>
           )}
 
-          <CvBlock label="education">
-            <EntryRows entries={CV.education} />
-          </CvBlock>
-
           <CvBlock label="skills">
             <dl>
               {SKILL_CATEGORIES.map((cat, i) => (
@@ -88,10 +84,22 @@ export default function AboutPage() {
             </dl>
           </CvBlock>
 
+          <CvBlock label="industry & client projects">
+            <ProjectRows group={CV.industryProjects} />
+          </CvBlock>
+
+          <CvBlock label="personal projects">
+            <ProjectRows group={CV.personalProjects} />
+          </CvBlock>
+
+          <CvBlock label="education">
+            <EntryRows entries={CV.education} />
+          </CvBlock>
+
           <CvBlock label="languages">
             <dl>
               {CV.languages.map((lang, i) => (
-                <Row key={lang.name} first={i === 0}>
+                <Row key={lang.name} first={i === 0} compact>
                   <dt className="font-body text-sm font-bold uppercase tracking-wide">
                     {lang.name}
                   </dt>
@@ -106,12 +114,16 @@ export default function AboutPage() {
   );
 }
 
-/** Left column: portrait, contact, CV download. Sticky on desktop so contact stays in reach. */
+/**
+ * Left column: portrait, contact, CV download. Scrolls together with the CV.
+ * (It used to be sticky, but at ~840px it's taller than most screens, so its
+ * bottom was cut off while the right column kept moving.)
+ */
 function ProfileColumn() {
   const { email, phone, website, github, linkedin, location, nationality } = CV.contact;
 
   return (
-    <aside className="flex flex-col gap-8 lg:sticky lg:top-8 lg:self-start">
+    <aside className="flex flex-col gap-8 lg:self-start">
       <div className="relative mx-auto w-full max-w-xs lg:max-w-none">
         <span aria-hidden="true" className="absolute -bottom-4 -left-4 h-full w-full bg-blue" />
         <div className="relative aspect-[4/5] w-full overflow-hidden border-[3px] border-ink bg-cream shadow-bauhaus">
@@ -207,7 +219,8 @@ function ContactRow({ icon, children }: { icon: ReactNode; children: ReactNode }
 
 /** A CV section: yellow tab label sitting on an ink-bordered table. */
 function CvBlock({ label, children }: { label: string; children: ReactNode }) {
-  const id = `cv-${label}`;
+  // ids can't contain spaces: aria-labelledby reads a space-separated list of ids
+  const id = `cv-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
     <section aria-labelledby={id}>
       <h2 id={id} className="section-tab relative z-10 -mb-[3px] lowercase">
@@ -219,14 +232,69 @@ function CvBlock({ label, children }: { label: string; children: ReactNode }) {
 }
 
 /** Two-column table row: label/period cell | content cell. Stacks on phones. */
-function Row({ first, children }: { first: boolean; children: ReactNode }) {
+function Row({
+  first,
+  compact = false,
+  children,
+}: {
+  first: boolean;
+  /** tighter rows for one-line content (languages) */
+  compact?: boolean;
+  children: ReactNode;
+}) {
   return (
     <div
-      className={`grid gap-2 px-5 py-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-6 sm:px-6 ${
-        first ? "" : "border-t-[3px] border-ink"
-      }`}
+      className={`grid px-5 sm:grid-cols-[10rem_minmax(0,1fr)] sm:px-6 ${
+        compact ? "gap-1 py-2.5 sm:items-baseline sm:gap-6" : "gap-2 py-4 sm:gap-6"
+      } ${first ? "" : "border-t-[3px] border-ink"}`}
     >
       {children}
+    </div>
+  );
+}
+
+/**
+ * Project list: an intro line, then one full-width row per project with the
+ * name on the left, facts (semester · team · year) on the right, bullets below.
+ */
+function ProjectRows({ group }: { group: CvProjectGroup }) {
+  return (
+    <div>
+      <p className="border-b-[3px] border-ink px-5 py-4 font-body text-base leading-relaxed text-ink/85 sm:px-6">
+        {group.intro}
+      </p>
+      {group.items.map((p, i) => (
+        <article
+          key={`${p.name}-${i}`}
+          className={`px-5 py-4 sm:px-6 ${i === 0 ? "" : "border-t-[3px] border-ink"} ${
+            p.placeholder ? "opacity-55" : ""
+          }`}
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+            <h3 className="font-display text-xl font-semibold leading-tight">
+              {p.name}
+            </h3>
+            <ul className="flex flex-wrap gap-1.5" aria-label="Project facts">
+              {p.meta.map((m) => (
+                <li
+                  key={m}
+                  className="border-2 border-ink bg-cream px-2 py-0.5 font-body text-xs font-bold uppercase tracking-wide"
+                >
+                  {m}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <ul className="mt-3 space-y-2">
+            {p.bullets.map((b) => (
+              <li key={b} className="flex gap-3 font-body text-base leading-relaxed text-ink/85">
+                <span aria-hidden="true" className="mt-2.5 h-2 w-2 shrink-0 bg-orange" />
+                {b}
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
     </div>
   );
 }
