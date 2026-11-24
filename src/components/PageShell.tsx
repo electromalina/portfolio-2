@@ -4,6 +4,7 @@ import StickyNav from "@/components/StickyNav";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { ACCENT_BG, CATEGORIES, type Category } from "@/lib/navigation";
 import { cssVar } from "@/lib/design-tokens";
+import InkSweep, { INK_SWEEP_TEXT } from "@/components/InkSweep";
 
 type PageShellProps = {
   /** which category this page is — sets the band color and hides it from the switcher */
@@ -58,10 +59,13 @@ export default function PageShell({
                 key={c.id}
                 href={c.href}
                 color={cssVar[c.accent]}
-                className={`focus-bauhaus inline-flex min-h-11 items-center gap-2 border-[3px] border-ink px-3 font-body text-xs font-bold uppercase tracking-wide text-ink transition-transform hover:-translate-y-0.5 sm:px-4 sm:text-sm ${ACCENT_BG[c.accent]}`}
+                className={`focus-bauhaus group relative inline-flex min-h-11 items-center overflow-hidden border-[3px] border-ink px-3 font-body text-xs font-bold uppercase tracking-wide text-ink sm:px-4 sm:text-sm ${ACCENT_BG[c.accent]}`}
               >
-                <span className="font-extrabold">{c.number}</span>
-                <span>{c.title}</span>
+                <InkSweep />
+                <span className={`relative inline-flex items-center gap-2 ${INK_SWEEP_TEXT}`}>
+                  <span className="font-extrabold">{c.number}</span>
+                  <span>{c.title}</span>
+                </span>
               </TransitionLink>
             ))}
           </nav>

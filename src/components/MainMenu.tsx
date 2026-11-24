@@ -2,6 +2,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { ACCENT_BG, CATEGORIES, type Category } from "@/lib/navigation";
 import { cssVar } from "@/lib/design-tokens";
+import InkSweep, { INK_SWEEP_TEXT } from "@/components/InkSweep";
 
 /** One static geometric motif per card, same vocabulary as the hero tiles. */
 function Motif({ id }: { id: Category["id"] }) {
@@ -68,12 +69,10 @@ export default function MainMenu() {
                 </span>
               </span>
 
-              <span className="relative flex flex-1 items-center justify-between gap-4 overflow-hidden px-5 py-4 transition-colors duration-300 group-hover:text-cream group-focus-visible:text-cream sm:px-6">
-                {/* ink fill sweeping in from the left: scaleX is GPU-composited, no repaint */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 origin-left scale-x-0 bg-ink transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100 motion-reduce:transition-none"
-                />
+              <span
+                className={`relative flex flex-1 items-center justify-between gap-4 overflow-hidden px-5 py-4 sm:px-6 ${INK_SWEEP_TEXT}`}
+              >
+                <InkSweep />
                 <span className="relative font-body text-sm leading-snug sm:text-base">
                   {c.teaser}
                 </span>
