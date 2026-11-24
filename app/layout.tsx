@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk, Josefin_Sans } from "next/font/google";
 import TransitionProvider from "@/components/transition/TransitionProvider";
+import ScrollReveal from "@/components/ScrollReveal";
 import "./globals.css";
 
 // Display face — geometric, vintage Bauhaus feel. Variable font, so every
@@ -66,7 +67,10 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        <TransitionProvider>{children}</TransitionProvider>
+        <TransitionProvider>
+          {children}
+          <ScrollReveal />
+        </TransitionProvider>
       </body>
     </html>
   );

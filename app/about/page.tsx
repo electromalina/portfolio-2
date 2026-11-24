@@ -229,7 +229,7 @@ function CvBlock({ label, children }: { label: string; children: ReactNode }) {
   // ids can't contain spaces: aria-labelledby reads a space-separated list of ids
   const id = `cv-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   return (
-    <section aria-labelledby={id}>
+    <section aria-labelledby={id} className="reveal">
       <h2 id={id} className="section-tab relative z-10 -mb-[3px] lowercase">
         {label}
       </h2>

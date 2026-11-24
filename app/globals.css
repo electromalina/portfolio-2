@@ -226,8 +226,10 @@ h2.section-tab {
 }
 
 /* ---- Scroll reveal ----------------------------------------------------- */
+/* Only hidden once ScrollReveal has run (it adds .reveal-ready to <html>),
+   so without JavaScript all content stays visible. */
 
-.reveal {
+html.reveal-ready .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition:
@@ -235,7 +237,7 @@ h2.section-tab {
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal.is-visible {
+html.reveal-ready .reveal.is-visible {
   opacity: 1;
   transform: none;
   will-change: auto;
@@ -255,7 +257,7 @@ h2.section-tab {
   .page-enter {
     animation: none !important;
   }
-  .reveal {
+  html.reveal-ready .reveal {
     opacity: 1;
     transform: none;
     transition: none;

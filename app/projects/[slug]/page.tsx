@@ -102,7 +102,7 @@ export default async function ProjectPage({
             // same tab-on-block pattern as the CV sections on /about
             const id = `section-${key}`;
             return (
-              <section key={key} aria-labelledby={id}>
+              <section key={key} aria-labelledby={id} className="reveal">
                 <h2 id={id} className="section-tab relative z-10 -mb-[3px] lowercase">
                   {label}
                 </h2>

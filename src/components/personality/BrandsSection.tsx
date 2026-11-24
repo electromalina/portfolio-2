@@ -19,7 +19,8 @@ export default function BrandsSection({ brands, eyebrow, title, intro, hint }: B
   return (
     <section aria-labelledby="brands-heading" className="overflow-hidden bg-blue text-ink">
       <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-10">
-        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
+        {/* reveal only the heading: the sticker board has its own pointer/transform logic */}
+        <div className="reveal flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
           <div>
             {/* same Midnight as the board below, so the label reads as part of it */}
             <p
