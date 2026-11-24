@@ -13,6 +13,7 @@ import TransitionLink from "@/components/transition/TransitionLink";
 import { getPublishedProjects } from "@/lib/projects";
 import { ACCENT_NAME_CYCLE, cssVar } from "@/lib/design-tokens";
 import { ACCENT_BG } from "@/lib/navigation";
+import { PROJECT_SECTIONS } from "@/lib/project-sections";
 
 export const revalidate = 60;
 
@@ -75,28 +76,32 @@ export default async function ProjectPage({
       bandColorClass={ACCENT_BG[accent]}
     >
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:gap-14">
-        {/* left: cover + story */}
+        {/* left: summary + cover + story sections */}
         <div className="flex min-w-0 flex-col gap-8">
-          <div
-            className={`border-[3px] border-ink p-3 shadow-bauhaus sm:p-5 ${ACCENT_BG[accent]}`}
-          >
-            <ProjectCover src={project.cover_url} alt={`${project.title} cover`} />
-          </div>
-
           {project.summary && (
             <p className="break-words font-body text-xl leading-relaxed text-ink">
               {project.summary}
             </p>
           )}
 
-          {project.content && (
-            <section>
-              <Label>About this project</Label>
-              <div className="whitespace-pre-line break-words font-body text-base leading-relaxed text-ink/85 sm:text-lg">
-                {project.content}
-              </div>
-            </section>
-          )}
+          <div
+            className={`border-[3px] border-ink p-3 shadow-bauhaus sm:p-5 ${ACCENT_BG[accent]}`}
+          >
+            <ProjectCover src={project.cover_url} alt={`${project.title} cover`} />
+          </div>
+
+          {PROJECT_SECTIONS.map(({ key, label }) => {
+            const text = project[key];
+            if (!text) return null;
+            return (
+              <section key={key}>
+                <Label>{label}</Label>
+                <div className="whitespace-pre-line break-words font-body text-base leading-relaxed text-ink/85 sm:text-lg">
+                  {text}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         {/* right: facts column, sticky on desktop. It's short (tags + 2 buttons),
