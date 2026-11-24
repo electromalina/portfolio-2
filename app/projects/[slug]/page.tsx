@@ -11,7 +11,7 @@ import PageShell from "@/components/PageShell";
 import ProjectCover from "@/components/projects/ProjectCover";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { getPublishedProjects } from "@/lib/projects";
-import { ACCENT_NAME_CYCLE, cssVar } from "@/lib/design-tokens";
+import { ACCENT_NAME_CYCLE, cssVar, type AccentName } from "@/lib/design-tokens";
 import { ACCENT_BG } from "@/lib/navigation";
 import { PROJECT_SECTIONS } from "@/lib/project-sections";
 
@@ -25,6 +25,11 @@ export async function generateStaticParams(): Promise<Params[]> {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
+/** project + its accent (cycles by list position, same as the cards) */
+function withAccent<T>(project: T, index: number) {
+  return { ...project, accent: ACCENT_NAME_CYCLE[index % ACCENT_NAME_CYCLE.length] };
+}
+
 async function findProject(slug: string) {
   const projects = await getPublishedProjects();
   const index = projects.findIndex((p) => p.slug === slug);
@@ -36,8 +41,8 @@ async function findProject(slug: string) {
     index,
     accent: ACCENT_NAME_CYCLE[index % ACCENT_NAME_CYCLE.length],
     // no wrap-around at the ends; null hides the link
-    prev: index > 0 ? { p: projects[index - 1], i: index - 1 } : null,
-    next: index < total - 1 ? { p: projects[index + 1], i: index + 1 } : null,
+    prev: index > 0 ? withAccent(projects[index - 1], index - 1) : null,
+    next: index < total - 1 ? withAccent(projects[index + 1], index + 1) : null,
   };
 }
 
@@ -172,20 +177,20 @@ export default async function ProjectPage({
         >
           {prev ? (
             <SiblingLink
-              href={`/projects/${prev.p.slug}`}
-              accent={ACCENT_NAME_CYCLE[prev.i % ACCENT_NAME_CYCLE.length]}
+              href={`/projects/${prev.slug}`}
+              accent={prev.accent}
               direction="Previous"
-              title={prev.p.title}
+              title={prev.title}
             />
           ) : (
             <span className="hidden sm:block" />
           )}
           {next && (
             <SiblingLink
-              href={`/projects/${next.p.slug}`}
-              accent={ACCENT_NAME_CYCLE[next.i % ACCENT_NAME_CYCLE.length]}
+              href={`/projects/${next.slug}`}
+              accent={next.accent}
               direction="Next"
-              title={next.p.title}
+              title={next.title}
             />
           )}
         </nav>
@@ -201,7 +206,7 @@ function SiblingLink({
   title,
 }: {
   href: string;
-  accent: (typeof ACCENT_NAME_CYCLE)[number];
+  accent: AccentName;
   direction: "Previous" | "Next";
   title: string;
 }) {

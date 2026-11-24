@@ -7,13 +7,16 @@ import { usePageTransition } from "@/components/transition/TransitionProvider";
 
 type TransitionLinkProps = Omit<ComponentProps<typeof Link>, "href"> & {
   href: string;
-  /** color of the wipe block, e.g. `cssVar.orange` */
-  color: string;
+  /**
+   * Transition color, only needed when the destination's color can't be
+   * derived from its URL (project pages: accent depends on list position).
+   */
+  color?: string;
 };
 
 /**
- * A normal next/link (real <a>, works without JS) that plays the fullscreen
- * wipe on plain left-clicks. Ctrl/Cmd/middle clicks open normally.
+ * A normal next/link (real <a>, works without JS) that plays the page
+ * transition on plain left-clicks. Ctrl/Cmd/middle clicks open normally.
  */
 export default function TransitionLink({
   href,
@@ -45,7 +48,7 @@ export default function TransitionLink({
       return;
     }
     e.preventDefault();
-    navigate(href, e.currentTarget.getBoundingClientRect(), color);
+    navigate(href, color);
   };
 
   return (

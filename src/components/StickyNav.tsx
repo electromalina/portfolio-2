@@ -76,6 +76,8 @@ export default function StickyNav({
   return (
     <div
       ref={barRef}
+      // TransitionProvider remembers this band's color for back/forward
+      data-page-band
       // at the top the bar blends into the title band (transparent border);
       // once compact (or with the menu open) it gets the ink rule
       className={`sticky top-0 z-40 border-b-[3px] transition-colors duration-200 ${bandClass} ${

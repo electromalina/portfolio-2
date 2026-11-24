@@ -3,7 +3,6 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import StickyNav from "@/components/StickyNav";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { ACCENT_BG, CATEGORIES, type Category } from "@/lib/navigation";
-import { cssVar } from "@/lib/design-tokens";
 import InkSweep, { INK_SWEEP_TEXT } from "@/components/InkSweep";
 
 type PageShellProps = {
@@ -45,7 +44,6 @@ export default function PageShell({
         left={
           <TransitionLink
             href={back.href}
-            color={cssVar.cream}
             className="focus-bauhaus inline-flex min-h-11 shrink-0 items-center gap-2 border-[3px] border-ink bg-cream px-4 font-body text-sm font-bold uppercase tracking-wide text-ink shadow-bauhaus-sm transition-transform hover:-translate-x-0.5"
           >
             <FaArrowLeftLong className="h-4 w-4" aria-hidden="true" />
@@ -58,7 +56,6 @@ export default function PageShell({
               <TransitionLink
                 key={c.id}
                 href={c.href}
-                color={cssVar[c.accent]}
                 className={`focus-bauhaus group relative inline-flex min-h-11 items-center overflow-hidden border-[3px] border-ink px-3 font-body text-xs font-bold uppercase tracking-wide text-ink sm:px-4 sm:text-sm ${ACCENT_BG[c.accent]}`}
               >
                 <InkSweep />
@@ -79,7 +76,6 @@ export default function PageShell({
                   <li key={c.id} className={i === 0 ? "" : "border-t-[3px] border-ink"}>
                     <TransitionLink
                       href={c.href}
-                      color={cssVar[c.accent]}
                       aria-current={isCurrent ? "page" : undefined}
                       className={`focus-bauhaus flex min-h-14 items-center gap-3 px-5 text-ink ${ACCENT_BG[c.accent]}`}
                     >

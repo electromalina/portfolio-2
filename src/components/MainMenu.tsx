@@ -1,7 +1,6 @@
 import { FaArrowRightLong } from "react-icons/fa6";
 import TransitionLink from "@/components/transition/TransitionLink";
 import { ACCENT_BG, CATEGORIES, type Category } from "@/lib/navigation";
-import { cssVar } from "@/lib/design-tokens";
 import InkSweep, { INK_SWEEP_TEXT } from "@/components/InkSweep";
 
 /** One static geometric motif per card, same vocabulary as the hero tiles. */
@@ -47,7 +46,6 @@ export default function MainMenu() {
           <li key={c.id} className="@container flex">
             <TransitionLink
               href={c.href}
-              color={cssVar[c.accent]}
               // the card itself never moves on hover (moving it shifts its edge out from
               // under the cursor → flicker); only transforms inside it animate
               className="focus-bauhaus group flex w-full flex-col border-[3px] border-ink bg-cream text-ink shadow-bauhaus"

@@ -2,8 +2,8 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import TransitionLink from "@/components/transition/TransitionLink";
 import type { Project } from "@/app/actions/projects";
 import type { AccentName } from "@/lib/design-tokens";
-import { cssVar } from "@/lib/design-tokens";
 import { ACCENT_BG } from "@/lib/navigation";
+import { cssVar } from "@/lib/design-tokens";
 
 export default function ProjectCard({
   project,
