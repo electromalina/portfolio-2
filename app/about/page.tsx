@@ -30,7 +30,14 @@ export default function AboutPage() {
         <div className="flex min-w-0 flex-col gap-10">
           <CvBlock label="profile">
             <div className="p-5 sm:p-6">
-              <p className="mb-3 font-display text-2xl font-semibold leading-tight">{CV.headline}</p>
+              {/* normal capitalisation on purpose: the rest of the site is lowercase,
+                  but a CV should show the name the way it's written */}
+              <p className="break-words font-display text-4xl font-semibold leading-none text-ink sm:text-5xl">
+                {CV.name}
+              </p>
+              <p className="mb-4 mt-2 font-display text-xl leading-tight text-ink/80 sm:text-2xl">
+                {CV.headline}
+              </p>
               <p className="font-body text-lg leading-relaxed text-ink/90">
                 {CV.profile}
               </p>

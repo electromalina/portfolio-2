@@ -31,9 +31,10 @@ export type CvProjectGroup = {
 };
 
 export const CV = {
-  headline: "Media Design Student · Full Stack Developer",
+  name: "Danylo Kalynovskyi",
+  headline: "ICT & Media Design Student · Front-end Developer",
   profile:
-    "Motivated ICT & Media Design student with a strong interest in front-end and full-stack web development. Experienced in building responsive web interfaces, designing intuitive user experiences, and creating high-fidelity prototypes. Skilled in branding, user research, and visual design, with a collaborative mindset and a strong willingness to learn new technologies.",
+    "Third-year ICT & Media Design student at Fontys who designs interfaces and builds them. I work mainly with Next.js, TypeScript and Tailwind, and I've been lead programmer on team projects for real clients, from setting up the architecture to reviewing code and deploying the final product. Outside school I build fun, experimental projects to try out new tools and ideas. I'm now growing towards full-stack development and looking for an internship where I can learn from an experienced team, pick up new skills and grow into a well-rounded developer.",
   focus: ["Front-end", "Full-stack", "UI/UX", "Branding"],
 
   contact: {
@@ -49,30 +50,27 @@ export const CV = {
   /** null until a PDF exists in /public — the button renders as "coming soon" */
   cvPdfUrl: null as string | null,
 
-  // TODO: replace the placeholder entries (name, meta, bullets) and drop `placeholder: true`
   industryProjects: {
     intro:
       "Real projects for real companies, delivered through Fontys semester programmes. I worked in teams where I played a major role, from first client meeting to final delivery.",
     items: [
       {
-        name: "Project name",
-        meta: ["Semester 4", "Team of 5", "2025"],
+        name: "OWOW Service Portal",
+        meta: ["Semester 5", "Team of 6", "2026"],
         bullets: [
-          "What the product does for the client.",
-          "What I was responsible for.",
-          "Result or outcome for the client.",
+          "Client dashboard where OWOW's clients track project progress, documents, budget and meetings.",
+          "Lead programmer: app setup, Supabase auth with roles, code reviews, final polish and deployment.",
+          "Delivered a working prototype with handover documentation, ready to connect to live data.",
         ],
-        placeholder: true,
       },
       {
-        name: "Project name",
-        meta: ["Semester 3", "Team of 4", "2024"],
+        name: "OWOW Atlas – Animation Catalog",
+        meta: ["Semester 4", "Team of 6", "2026"],
         bullets: [
-          "What the product does for the client.",
-          "What I was responsible for.",
-          "Result or outcome for the client.",
+          "Internal catalog of UI animations with live demos, tunable controls and copyable code.",
+          "Lead programmer: registry architecture, library page with filtering, and developed animations.",
+          "Built a plug-in system and validation script so the team can add animations without touching page code.",
         ],
-        placeholder: true,
       },
     ],
   } satisfies CvProjectGroup,
@@ -82,13 +80,20 @@ export const CV = {
       "Things I build on my own time to learn new tools and try out ideas, designed and developed end to end by me.",
     items: [
       {
-        name: "Project name",
-        meta: ["Personal", "Solo", "2025"],
+        name: "Flipdot Spotify Display",
+        meta: ["Solo", "2025"],
         bullets: [
-          "What it does.",
-          "Stack or technique I wanted to learn.",
+          "Shows live Spotify playback, including dithered album art, on a physical 84×56 flipdot display.",
+          "Learned hardware rendering, OAuth 2.0, image dithering and worker threads in Node.js.",
         ],
-        placeholder: true,
+      },
+      {
+        name: "Hryvnia",
+        meta: ["Solo", "2026"],
+        bullets: [
+          "Educational guide to Ukraine's eight banknotes, with interactive 3D notes and security features.",
+          "Learned 3D on the web with Three.js and React Three Fiber, and data-driven static pages in Next.js.",
+        ],
       },
     ],
   } satisfies CvProjectGroup,
