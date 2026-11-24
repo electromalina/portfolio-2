@@ -84,19 +84,29 @@ export default async function ProjectPage({
             </p>
           )}
 
-          <div
-            className={`border-[3px] border-ink p-3 shadow-bauhaus sm:p-5 ${ACCENT_BG[accent]}`}
-          >
-            <ProjectCover src={project.cover_url} alt={`${project.title} cover`} />
+          {/* image fills the ink border; an offset accent block sits behind it
+              (same frame as the portrait on /about). mr/mb reserve room for the offset. */}
+          <div className="relative mb-3 mr-3 sm:mb-4 sm:mr-4">
+            <span
+              aria-hidden="true"
+              className={`absolute -bottom-3 -right-3 h-full w-full sm:-bottom-4 sm:-right-4 ${ACCENT_BG[accent]}`}
+            />
+            <div className="relative border-[3px] border-ink bg-cream">
+              <ProjectCover src={project.cover_url} alt={`${project.title} cover`} />
+            </div>
           </div>
 
           {PROJECT_SECTIONS.map(({ key, label }) => {
             const text = project[key];
             if (!text) return null;
+            // same tab-on-block pattern as the CV sections on /about
+            const id = `section-${key}`;
             return (
-              <section key={key}>
-                <Label>{label}</Label>
-                <div className="whitespace-pre-line break-words font-body text-base leading-relaxed text-ink/85 sm:text-lg">
+              <section key={key} aria-labelledby={id}>
+                <h2 id={id} className="section-tab relative z-10 -mb-[3px] lowercase">
+                  {label}
+                </h2>
+                <div className="whitespace-pre-line break-words border-[3px] border-ink bg-cream p-5 font-body text-base leading-relaxed text-ink shadow-bauhaus-sm sm:p-6 sm:text-lg">
                   {text}
                 </div>
               </section>

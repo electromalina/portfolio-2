@@ -38,7 +38,7 @@ export default function ProjectCard({
       <span className="flex flex-1 flex-col gap-4 p-5">
         {/* fall back to the summary for projects that have no subheading yet */}
         {(project.subheading ?? project.summary) && (
-          <span className="line-clamp-2 font-body text-base leading-relaxed text-ink/85">
+          <span className="font-body text-base leading-relaxed text-ink/85">
             {project.subheading ?? project.summary}
           </span>
         )}
