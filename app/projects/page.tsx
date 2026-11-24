@@ -7,7 +7,7 @@ import { ACCENT_NAME_CYCLE } from "@/lib/design-tokens";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Featured projects",
+  title: "Projects",
   description: "Selected web development and UI/UX projects by Danylo Kalynovskyi.",
 };
 
@@ -18,7 +18,7 @@ export default async function ProjectsPage() {
     <PageShell
       current="projects"
       eyebrow={`02 · ${projects.length} ${projects.length === 1 ? "project" : "projects"}`}
-      title="featured projects"
+      title="projects"
     >
       <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
         {projects.length === 0 ? (

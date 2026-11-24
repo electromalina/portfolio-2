@@ -16,15 +16,15 @@ export const CATEGORIES: readonly Category[] = [
     href: "/about",
     number: "01",
     title: "about me",
-    teaser: "CV at a glance: education, experience, skills and contact.",
+    teaser: "Education, experience, skills and how to reach me.",
     accent: "orange",
   },
   {
     id: "projects",
     href: "/projects",
     number: "02",
-    title: "featured projects",
-    teaser: "Selected work, from brief to live demo.",
+    title: "projects",
+    teaser: "Things I've designed, built and shipped.",
     accent: "blue",
   },
   {
@@ -32,7 +32,7 @@ export const CATEGORIES: readonly Category[] = [
     href: "/personality",
     number: "03",
     title: "personality",
-    teaser: "The music, brands and habits behind the work.",
+    teaser: "A look at the person behind the projects.",
     accent: "yellow",
   },
 ];

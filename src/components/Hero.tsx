@@ -279,13 +279,13 @@ function RoleCard({
     // name always fits on one line. cqi on the container itself would measure
     // its parent instead, hence the inner wrapper carries padding + gap.
     <div className="@container absolute overflow-hidden bg-cream" style={style}>
-      {/* Card is 5 tiles × 2 (2.5:1). Josefin "danylo kalynovskyi" is ~8.6× its
-          font-size wide, so 8.5cqi fills ~73% of the card, leaving even margins. */}
+      {/* Card is 5 tiles × 2 (2.5:1). Josefin "Danylo Kalynovskyi" is ~8.8× its
+          font-size wide, so 8.5cqi fills ~75% of the card, leaving even margins. */}
       {/* Two lines: the name, then one shared row with the typed role on the
           left and contact icons pinned right (so typing never shifts them). */}
       <div className="flex h-full flex-col justify-center gap-[5cqi] px-[6cqi]">
-        <h1 className="whitespace-nowrap font-display font-semibold text-[8.5cqi] lowercase leading-[0.9] text-ink">
-          danylo kalynovskyi
+        <h1 className="whitespace-nowrap font-display font-semibold text-[8.5cqi] leading-[0.9] text-ink">
+          Danylo Kalynovskyi
         </h1>
         {/* screen readers get the full list once instead of every typed letter */}
         <p className="sr-only">{ROLES.join(", ")}</p>
