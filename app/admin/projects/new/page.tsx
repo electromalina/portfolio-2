@@ -1,3 +1,4 @@
+import ProjectStoryFields from "@/app/admin/ProjectStoryFields";
 import { createProject } from "@/app/actions/projects";
 
 export default function NewProjectPage() {
@@ -30,35 +31,7 @@ export default function NewProjectPage() {
           </p>
         </div>
 
-        <div>
-          <label
-            htmlFor="summary"
-            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-          >
-            Summary
-          </label>
-          <textarea
-            name="summary"
-            id="summary"
-            rows={3}
-            className="mt-1 block w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-zinc-900 dark:text-zinc-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-          >
-            Content
-          </label>
-          <textarea
-            name="content"
-            id="content"
-            rows={10}
-            className="mt-1 block w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-zinc-900 dark:text-zinc-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div>
+        <ProjectStoryFields />
 
         <div>
           <label

@@ -4,6 +4,7 @@ import { requireAuth } from "@/app/admin/actions/auth";
 import { createAdmin } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { PROJECT_SECTIONS, type ProjectSectionKey } from "@/lib/project-sections";
 
 
 const DEFAULT_COVER_URL = "https://placehold.co/600x400?text=Placeholder+Image";
@@ -20,8 +21,10 @@ export type Project = {
   id: string;
   slug: string;
   title: string;
+  /** Short line shown on the /projects card. */
+  subheading: string | null;
+  /** Lead paragraph on the detail page, also used as meta description. */
   summary: string | null;
-  content: string | null;
   tags: string[] | null;
   cover_url: string | null;
   demo_url: string | null;
@@ -30,7 +33,42 @@ export type Project = {
   is_hidden: boolean;
   created_at: string;
   updated_at: string;
-};
+} & Record<ProjectSectionKey, string | null>;
+
+/** Trimmed string from the form, or null when empty. */
+function optionalText(formData: FormData, name: string): string | null {
+  const value = formData.get(name);
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed === "" ? null : trimmed;
+}
+
+/** Shared by create + update so both always write the same columns. */
+function parseProjectForm(formData: FormData) {
+  const title = (formData.get("title") as string).trim();
+  const tags = (optionalText(formData, "tags") ?? "")
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+
+  const sections = Object.fromEntries(
+    PROJECT_SECTIONS.map(({ key }) => [key, optionalText(formData, key)])
+  ) as Record<ProjectSectionKey, string | null>;
+
+  return {
+    title,
+    slug: generateSlug(title),
+    subheading: optionalText(formData, "subheading"),
+    summary: optionalText(formData, "summary"),
+    ...sections,
+    tags: tags.length > 0 ? tags : null,
+    cover_url: optionalText(formData, "cover_url") ?? DEFAULT_COVER_URL,
+    demo_url: optionalText(formData, "demo_url"),
+    github_url: optionalText(formData, "github_url"),
+    show_demo_button: formData.get("show_demo_button") === "on",
+    is_hidden: formData.get("is_hidden") === "on",
+  };
+}
 
 // GET ALL (for admin - includes hidden projects)
 export async function getAllProjects(): Promise<Project[]> {
@@ -55,46 +93,9 @@ export async function createProject(formData: FormData) {
     await requireAuth();
     const supabase = createAdmin();
   
-    // Extract form data
-    const title = formData.get("title") as string;
-    const summary = formData.get("summary") as string;
-    const content = formData.get("content") as string;
-    const tagsInput = formData.get("tags") as string;
-    const cover_url = formData.get("cover_url") as string;
-    const demo_url = formData.get("demo_url") as string;
-    const github_url = formData.get("github_url") as string;
-    const show_demo_button = formData.get("show_demo_button") === "on";
-    const is_hidden = formData.get("is_hidden") === "on";
-  
-    // Convert comma-separated tags to array
-    const tags = tagsInput
-      ? tagsInput
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean)
-      : [];
-  
-    const slug = generateSlug(title);
-    const sanitizedCoverUrl =
-      cover_url && cover_url.trim() !== "" ? cover_url : DEFAULT_COVER_URL;
-    const sanitizedDemoUrl =
-      demo_url && demo_url.trim() !== "" ? demo_url.trim() : null;
-    const sanitizedGithubUrl =
-      github_url && github_url.trim() !== "" ? github_url.trim() : null;
-  
-    // Insert into database
-    const { error } = await supabase.from("projects").insert({
-      title,
-      slug,
-      summary: summary || null,
-      content: content || null,
-      tags: tags.length > 0 ? tags : null,
-      cover_url: sanitizedCoverUrl,
-      demo_url: sanitizedDemoUrl,
-      github_url: sanitizedGithubUrl,
-      show_demo_button,
-      is_hidden,
-    });
+    const { error } = await supabase
+      .from("projects")
+      .insert(parseProjectForm(formData));
   
     if (error) {
       console.error("Create error:", error);
@@ -104,6 +105,7 @@ export async function createProject(formData: FormData) {
     // Refresh the pages that show projects
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/projects", "layout");
   
     // Redirect back to admin page
     redirect("/admin");
@@ -114,45 +116,9 @@ export async function updateProject(id: string, formData: FormData) {
     await requireAuth();
     const supabase = createAdmin();
   
-    const title = formData.get("title") as string;
-    const summary = formData.get("summary") as string;
-    const content = formData.get("content") as string;
-    const tagsInput = formData.get("tags") as string;
-    const cover_url = formData.get("cover_url") as string;
-    const demo_url = formData.get("demo_url") as string;
-    const github_url = formData.get("github_url") as string;
-    const show_demo_button = formData.get("show_demo_button") === "on";
-    const is_hidden = formData.get("is_hidden") === "on";
-  
-    const tags = tagsInput
-      ? tagsInput
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean)
-      : [];
-  
-    const slug = generateSlug(title);
-    const sanitizedCoverUrl =
-      cover_url && cover_url.trim() !== "" ? cover_url : DEFAULT_COVER_URL;
-    const sanitizedDemoUrl =
-      demo_url && demo_url.trim() !== "" ? demo_url.trim() : null;
-    const sanitizedGithubUrl =
-      github_url && github_url.trim() !== "" ? github_url.trim() : null;
-  
     const { error } = await supabase
       .from("projects")
-      .update({
-        title,
-        slug,
-        summary: summary || null,
-        content: content || null,
-        tags: tags.length > 0 ? tags : null,
-        cover_url: sanitizedCoverUrl,
-        demo_url: sanitizedDemoUrl,
-        github_url: sanitizedGithubUrl,
-        show_demo_button,
-        is_hidden,
-      })
+      .update(parseProjectForm(formData))
       .eq("id", id);
   
     if (error) {
@@ -162,7 +128,7 @@ export async function updateProject(id: string, formData: FormData) {
   
     revalidatePath("/");
     revalidatePath("/admin");
-    revalidatePath(`/project/${slug}`);
+    revalidatePath("/projects", "layout");
     redirect("/admin");
   }
   
@@ -200,6 +166,7 @@ export async function deleteProject(id: string) {
   
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/projects", "layout");
   }
 
 
@@ -220,4 +187,5 @@ export async function toggleHidden(id: string, currentState: boolean) {
   
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/projects", "layout");
   }

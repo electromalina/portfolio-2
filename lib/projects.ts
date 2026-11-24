@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createAdmin } from "@/lib/supabase/admin";
 import type { Project } from "@/app/actions/projects";
 
@@ -7,8 +8,11 @@ import type { Project } from "@/app/actions/projects";
  *
  * Wrapped in try/catch so the homepage still renders (with an empty list)
  * if Supabase env vars are missing or the request fails.
+ *
+ * Wrapped in React `cache()` so generateMetadata + page in one request
+ * share a single DB query.
  */
-export async function getPublishedProjects(): Promise<Project[]> {
+export const getPublishedProjects = cache(async (): Promise<Project[]> => {
   try {
     const supabase = createAdmin();
 
@@ -28,4 +32,4 @@ export async function getPublishedProjects(): Promise<Project[]> {
     console.error("getPublishedProjects failed:", err);
     return [];
   }
-}
+});

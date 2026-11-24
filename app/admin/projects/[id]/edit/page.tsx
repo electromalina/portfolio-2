@@ -1,3 +1,4 @@
+import ProjectStoryFields from "@/app/admin/ProjectStoryFields";
 import { getProject, updateProject } from "@/app/actions/projects";
 import { notFound } from "next/navigation";
 
@@ -43,37 +44,7 @@ export default async function EditProjectPage({
           </p>
         </div>
 
-        <div>
-          <label
-            htmlFor="summary"
-            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-          >
-            Summary
-          </label>
-          <textarea
-            name="summary"
-            id="summary"
-            rows={3}
-            defaultValue={project.summary || ""}
-            className="mt-1 block w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-zinc-900 dark:text-zinc-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
-          >
-            Content
-          </label>
-          <textarea
-            name="content"
-            id="content"
-            rows={10}
-            defaultValue={project.content || ""}
-            className="mt-1 block w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-zinc-900 dark:text-zinc-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-        </div>
+        <ProjectStoryFields project={project} />
 
         <div>
           <label

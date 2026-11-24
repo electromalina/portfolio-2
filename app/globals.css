@@ -13,8 +13,8 @@
   --color-yellow: #f5be5d;
   --color-ink: #302e2f;
 
-  /* fonts are injected on <html> by next/font as --font-bayer / --font-hanken */
-  --font-display: var(--font-bayer), "Arial Black", sans-serif;
+  /* fonts are injected on <html> by next/font as --font-josefin / --font-hanken */
+  --font-display: var(--font-josefin), "Arial Black", sans-serif;
   --font-body: var(--font-hanken), system-ui, sans-serif;
 }
 
@@ -30,11 +30,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* keep the smooth-scroll for in-page nav anchors, but respect reduced motion */
+:root {
+  /* clearance below the ~71px sticky nav bar (StickyNav) + a little air.
+     Used by anchor scrolling and by sticky elements (`top-(--nav-offset)`). */
+  --nav-offset: 5.5rem;
+}
+
 html {
   scroll-behavior: smooth;
-  /* offset anchor targets so they clear the sticky header */
-  scroll-padding-top: 72px;
+  /* anchor links (#cv-skills, skip link…) land below the sticky nav bar */
+  scroll-padding-top: var(--nav-offset);
 }
 
 ::selection {
@@ -45,13 +50,14 @@ html {
 /* ---- Bauhaus building blocks ------------------------------------------- */
 
 /* hard offset shadow that defines the whole aesthetic */
-.shadow-bauhaus {
+/* declared with @utility (not plain classes) so variants like hover: work */
+@utility shadow-bauhaus {
   box-shadow: 8px 8px 0 0 var(--color-ink);
 }
-.shadow-bauhaus-sm {
+@utility shadow-bauhaus-sm {
   box-shadow: 5px 5px 0 0 var(--color-ink);
 }
-.shadow-bauhaus-orange {
+@utility shadow-bauhaus-orange {
   box-shadow: 8px 8px 0 0 var(--color-orange);
 }
 
@@ -70,7 +76,8 @@ html {
   color: var(--color-ink);
   border: 3px solid var(--color-ink);
   padding: 0.35rem 1.25rem 0.5rem;
-  font-family: var(--font-bayer), sans-serif;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 1.875rem;
   letter-spacing: 0.06em;
   box-shadow: 4px 4px 0 0 var(--color-ink);
@@ -196,31 +203,17 @@ h2.section-tab {
   transform-origin: top center;
 }
 
-/* ---- Project modal ----------------------------------------------------- */
+/* ---- Page enter (after the fullscreen wipe) --------------------------- */
 
-@keyframes overlay-in {
+/* fade only: a slide here moved the whole page content on load, which read
+   as the page "jumping" (most visible on the dark music band) */
+@keyframes page-enter {
   from {
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }
 }
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.modal-overlay {
-  animation: overlay-in 0.25s ease both;
-}
-.modal-panel {
-  animation: modal-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+.page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
 
 .type-cursor {
@@ -233,8 +226,10 @@ h2.section-tab {
 }
 
 /* ---- Scroll reveal ----------------------------------------------------- */
+/* Only hidden once ScrollReveal has run (it adds .reveal-ready to <html>),
+   so without JavaScript all content stays visible. */
 
-.reveal {
+html.reveal-ready .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition:
@@ -242,7 +237,7 @@ h2.section-tab {
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal.is-visible {
+html.reveal-ready .reveal.is-visible {
   opacity: 1;
   transform: none;
   will-change: auto;
@@ -259,13 +254,30 @@ h2.section-tab {
   .anim-morph,
   .anim-sway,
   .type-cursor,
-  .modal-overlay,
-  .modal-panel {
+  .page-enter {
     animation: none !important;
   }
-  .reveal {
+  html.reveal-ready .reveal {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ---- Album showcase (personality page) -------------------------------- */
+
+/* vinyl slides out from behind the cover. Uses the individual `translate` /
+   `rotate` properties (what Tailwind v4's translate-x-* sets), so it ends
+   exactly where the element's own class puts it. */
+@keyframes vinyl-out {
+  from {
+    translate: 0 0;
+    rotate: -90deg;
+  }
+}
+
+@keyframes cover-in {
+  from {
+    opacity: 0;
   }
 }

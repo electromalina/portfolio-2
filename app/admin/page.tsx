@@ -48,7 +48,7 @@ export default async function AdminPage() {
                         )}
                       </div>
                       <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                        {project.summary}
+                        {project.subheading ?? project.summary}
                       </p>
                       <div className="mt-2 flex items-center gap-4 text-xs text-zinc-400 dark:text-zinc-500">
                         <span>Slug: {project.slug}</span>
