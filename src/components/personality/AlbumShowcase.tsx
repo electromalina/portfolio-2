@@ -124,7 +124,8 @@ export default function AlbumShowcase({
     >
       <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-10">
         {/* header */}
-        <p className="font-body text-xs font-bold uppercase tracking-[0.35em] text-yellow">
+        {/* chip in the band's highlight colour, like the sticker board's label */}
+        <p className="inline-block bg-yellow px-2 py-0.5 font-body text-xs font-bold uppercase tracking-[0.35em] text-ink">
           {eyebrow}
         </p>
         <h2
