@@ -47,8 +47,8 @@ export const CV = {
     nationality: "Ukrainian",
   },
 
-  /** null until a PDF exists in /public — the button renders as "coming soon" */
-  cvPdfUrl: null as string | null,
+  /** file in /public; set to null to show the disabled "coming soon" button */
+  cvPdfUrl: "/Danylo_Kalynovskyi_CV.pdf" as string | null,
 
   industryProjects: {
     intro:

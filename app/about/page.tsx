@@ -10,6 +10,7 @@ import {
   FaLocationDot,
   FaPhone,
 } from "react-icons/fa6";
+import InkSweep, { INK_SWEEP_TEXT } from "@/components/InkSweep";
 import PageShell from "@/components/PageShell";
 import { CV, type CvEntry, type CvProjectGroup } from "@/lib/cv";
 import { SKILL_CATEGORIES } from "@/lib/skills";
@@ -193,10 +194,17 @@ function ProfileColumn() {
         <a
           href={CV.cvPdfUrl}
           download
-          className="focus-bauhaus inline-flex items-center justify-center gap-2 border-[3px] border-ink bg-orange px-6 py-3 font-body text-sm font-bold text-cream shadow-bauhaus-sm transition-transform hover:-translate-y-0.5"
+          className="focus-bauhaus group relative inline-flex items-center justify-center overflow-hidden border-[3px] border-ink bg-orange px-6 py-3 font-body text-sm font-bold text-cream shadow-bauhaus-sm"
         >
-          <FaDownload aria-hidden="true" className="h-4 w-4" />
-          Download CV
+          <InkSweep />
+          <span className={`relative inline-flex items-center gap-2 ${INK_SWEEP_TEXT}`}>
+            {/* icon nudges down on hover, like the arrows elsewhere nudge right */}
+            <FaDownload
+              aria-hidden="true"
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5 motion-reduce:transition-none"
+            />
+            Download CV
+          </span>
         </a>
       ) : (
         // placeholder until a PDF exists: a disabled button is announced as unavailable
