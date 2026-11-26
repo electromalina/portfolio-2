@@ -79,8 +79,10 @@ export default function StickyNav({
       // TransitionProvider remembers this band's color for back/forward
       data-page-band
       // at the top the bar blends into the title band (transparent border);
-      // once compact (or with the menu open) it gets the ink rule
-      className={`sticky top-0 z-40 border-b-[3px] transition-colors duration-200 ${bandClass} ${
+      // once compact (or with the menu open) it gets the ink rule.
+      // translateZ(0): own GPU layer from the first paint, so iOS Safari doesn't
+      // draw the page one frame before the sticky bar after a navigation
+      className={`sticky top-0 z-40 border-b-[3px] [transform:translateZ(0)] transition-colors duration-200 ${bandClass} ${
         showRule ? "border-ink" : "border-transparent"
       }`}
     >

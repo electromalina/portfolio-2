@@ -215,6 +215,13 @@ h2.section-tab {
 .page-enter {
   animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
 }
+/* phones get no slide (TransitionProvider skips it below 640px), so without
+   it the fade only showed an empty page under an already-visible title band */
+@media (max-width: 639px) {
+  .page-enter {
+    animation: none;
+  }
+}
 
 .type-cursor {
   display: inline-block;
