@@ -33,8 +33,13 @@ const SAFETY_MS = 5000;
  */
 type Phase = "idle" | "in" | "covered" | "out";
 
-function prefersReducedMotion() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/**
+ * Navigate without the slide: when the user asks for reduced motion, and on
+ * phones (below Tailwind's sm = 640px), where it only delays the next page.
+ * Checked on every navigation, so rotating or resizing takes effect right away.
+ */
+function skipTransition() {
+  return window.matchMedia("(prefers-reduced-motion: reduce), (max-width: 639px)").matches;
 }
 
 /** jump without the smooth scroll-behavior set on <html> */
@@ -220,7 +225,7 @@ export default function TransitionProvider({
       const target = new URL(href, window.location.href).pathname;
       popScrollRef.current = null; // a click scrolls the new page to the top itself
       if (
-        prefersReducedMotion() ||
+        skipTransition() ||
         (phaseRef.current === "idle" && target === pathnameRef.current)
       ) {
         router.push(href);
@@ -260,8 +265,8 @@ export default function TransitionProvider({
       if (replayingRef.current) return; // our own re-dispatch: Next handles it
 
       const state = e.state as { __NA?: boolean } | null;
-      // not a Next.js history entry, or reduced motion: leave it to the browser
-      if (!state?.__NA || prefersReducedMotion()) return;
+      // not a Next.js history entry, reduced motion or a phone: leave it to the browser
+      if (!state?.__NA || skipTransition()) return;
 
       const next = window.location.pathname;
       // same page with nothing in progress (e.g. a #hash change): ignore
